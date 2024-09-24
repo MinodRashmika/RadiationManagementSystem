@@ -1,0 +1,319 @@
+-- LS
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `EditLSEntry`(
+    IN entry_id INT,
+    IN new_name_first VARCHAR(255),
+    IN new_name_last VARCHAR(255),
+    IN new_email VARCHAR(255),
+    IN new_phone VARCHAR(255),
+    IN new_location VARCHAR(255),
+    IN new_license_no VARCHAR(255),
+    IN new_sequence_no VARCHAR(255),
+    IN new_expiry VARCHAR(255),
+    IN new_purposes VARCHAR(255),
+    IN new_rss VARCHAR(255),
+    IN new_comments VARCHAR(255)
+)
+BEGIN
+    -- Check if any of the input parameters are not null and update the corresponding columns
+    IF new_name_first IS NOT NULL THEN
+        UPDATE ls SET `Name (first)` = new_name_first WHERE id = entry_id;
+    END IF;
+
+    IF new_name_last IS NOT NULL THEN
+        UPDATE ls SET `Name (last)` = new_name_last WHERE id = entry_id;
+    END IF;
+
+    IF new_email IS NOT NULL THEN
+        UPDATE ls SET Email = new_email WHERE id = entry_id;
+    END IF;
+
+    IF new_phone IS NOT NULL THEN
+        UPDATE ls SET Phone = new_phone WHERE id = entry_id;
+    END IF;
+
+    IF new_location IS NOT NULL THEN
+        UPDATE ls SET Location = new_location WHERE id = entry_id;
+    END IF;
+
+    IF new_license_no IS NOT NULL THEN
+        UPDATE ls SET `License no` = new_license_no WHERE id = entry_id;
+    END IF;
+
+    IF new_sequence_no IS NOT NULL THEN
+        UPDATE ls SET `Sequence no` = new_sequence_no WHERE id = entry_id;
+    END IF;
+
+    IF new_expiry IS NOT NULL THEN
+        UPDATE ls SET Expiry = new_expiry WHERE id = entry_id;
+    END IF;
+
+    IF new_purposes IS NOT NULL THEN
+        UPDATE ls SET Purposes = new_purposes WHERE id = entry_id;
+    END IF;
+
+    IF new_rss IS NOT NULL THEN
+        UPDATE ls SET RSS = new_rss WHERE id = entry_id;
+    END IF;
+
+    IF new_comments IS NOT NULL THEN
+        UPDATE ls SET Comments = new_comments WHERE id = entry_id;
+    END IF;
+END
+
+-- LX
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `EditLXEntry`(
+    IN entry_id INT,
+    IN new_name_first VARCHAR(255),
+    IN new_name_last VARCHAR(255),
+    IN new_email VARCHAR(255),
+    IN new_phone VARCHAR(255),
+    IN new_location VARCHAR(255),
+    IN new_license_no VARCHAR(255),
+    IN new_sequence_no VARCHAR(255),
+    IN new_expiry VARCHAR(255),
+    IN new_purposes VARCHAR(255),
+    IN new_rss VARCHAR(255),
+    IN new_comments VARCHAR(255)
+)
+BEGIN
+    -- Check if any of the input parameters are not null and update the corresponding columns
+    IF new_name_first IS NOT NULL THEN
+        UPDATE lx SET `Name (first)` = new_name_first WHERE id = entry_id;
+    END IF;
+
+    IF new_name_last IS NOT NULL THEN
+        UPDATE lx SET `Name (last)` = new_name_last WHERE id = entry_id;
+    END IF;
+
+    IF new_email IS NOT NULL THEN
+        UPDATE lx SET Email = new_email WHERE id = entry_id;
+    END IF;
+
+    IF new_phone IS NOT NULL THEN
+        UPDATE lx SET Phone = new_phone WHERE id = entry_id;
+    END IF;
+
+    IF new_location IS NOT NULL THEN
+        UPDATE lx SET Location = new_location WHERE id = entry_id;
+    END IF;
+
+    IF new_license_no IS NOT NULL THEN
+        UPDATE lx SET `License no` = new_license_no WHERE id = entry_id;
+    END IF;
+
+    IF new_sequence_no IS NOT NULL THEN
+        UPDATE lx SET `Sequence no` = new_sequence_no WHERE id = entry_id;
+    END IF;
+
+    IF new_expiry IS NOT NULL THEN
+        UPDATE lx SET Expiry = new_expiry WHERE id = entry_id;
+    END IF;
+
+    IF new_purposes IS NOT NULL THEN
+        UPDATE lx SET Purposes = new_purposes WHERE id = entry_id;
+    END IF;
+
+    IF new_rss IS NOT NULL THEN
+        UPDATE lx SET RSS = new_rss WHERE id = entry_id;
+    END IF;
+
+    IF new_comments IS NOT NULL THEN
+        UPDATE lx SET Comments = new_comments WHERE id = entry_id;
+    END IF;
+END
+
+-- RS 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `EditRSEntry`(
+    IN entry_id INT,
+    IN new_isotope VARCHAR(255),
+    IN new_quantity VARCHAR(255),
+    IN new_form VARCHAR(255),
+    IN new_purpose VARCHAR(255),
+    IN new_manufacturer VARCHAR(255),
+    IN new_model VARCHAR(255),
+    IN new_serial_no VARCHAR(255),
+    IN new_location VARCHAR(255),
+    IN new_rss VARCHAR(255),
+    IN new_custodian VARCHAR(255),
+    IN new_last_seen VARCHAR(255),
+    IN new_rc_notified VARCHAR(255),
+    IN new_comments VARCHAR(255)
+)
+BEGIN
+    IF new_isotope IS NOT NULL THEN
+        UPDATE rs SET Isotope = new_isotope WHERE id = entry_id;
+    END IF;
+
+    IF new_quantity IS NOT NULL THEN
+        UPDATE rs SET Quantity = new_quantity WHERE id = entry_id;
+    END IF;
+
+    IF new_form IS NOT NULL THEN
+        UPDATE rs SET Form = new_form WHERE id = entry_id;
+    END IF;
+
+    IF new_purpose IS NOT NULL THEN
+        UPDATE rs SET Purpose = new_purpose WHERE id = entry_id;
+    END IF;
+
+    IF new_manufacturer IS NOT NULL THEN
+        UPDATE rs SET Manufacturer = new_manufacturer WHERE id = entry_id;
+    END IF;
+
+    IF new_model IS NOT NULL THEN
+        UPDATE rs SET Model = new_model WHERE id = entry_id;
+    END IF;
+
+    IF new_serial_no IS NOT NULL THEN
+        UPDATE rs SET `Serial no` = new_serial_no WHERE id = entry_id;
+    END IF;
+
+    IF new_location IS NOT NULL THEN
+        UPDATE rs SET Location = new_location WHERE id = entry_id;
+    END IF;
+
+    IF new_rss IS NOT NULL THEN
+        UPDATE rs SET RSS = new_rss WHERE id = entry_id;
+    END IF;
+
+    IF new_custodian IS NOT NULL THEN
+        UPDATE rs SET Custodian = new_custodian WHERE id = entry_id;
+    END IF;
+
+    IF new_last_seen IS NOT NULL THEN
+        UPDATE rs SET Last_Seen = new_last_seen WHERE id = entry_id;
+    END IF;
+
+    IF new_rc_notified IS NOT NULL THEN
+        UPDATE rs SET RC_Notified = new_rc_notified WHERE id = entry_id;
+    END IF;
+
+    IF new_comments IS NOT NULL THEN
+        UPDATE rs SET Comments = new_comments WHERE id = entry_id;
+    END IF;
+END
+
+-- RSS
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `EditRSSEntry`(
+    IN entry_id INT,
+    IN new_name VARCHAR(255),
+    IN new_email VARCHAR(255),
+    IN new_phone VARCHAR(255),
+    IN new_location VARCHAR(255),
+    IN new_school VARCHAR(255),
+    IN new_head_of_school VARCHAR(255),
+    IN new_purposes VARCHAR(255)
+)
+BEGIN
+    IF new_name IS NOT NULL THEN
+        UPDATE rss SET Name = new_name WHERE id = entry_id;
+    END IF;
+
+    IF new_email IS NOT NULL THEN
+        UPDATE rss SET Email = new_email WHERE id = entry_id;
+    END IF;
+
+    IF new_phone IS NOT NULL THEN
+        UPDATE rss SET Phone = new_phone WHERE id = entry_id;
+    END IF;
+
+    IF new_location IS NOT NULL THEN
+        UPDATE rss SET Location = new_location WHERE id = entry_id;
+    END IF;
+
+    IF new_school IS NOT NULL THEN
+        UPDATE rss SET School = new_school WHERE id = entry_id;
+    END IF;
+
+    IF new_head_of_school IS NOT NULL THEN
+        UPDATE rss SET `Head of School` = new_head_of_school WHERE id = entry_id;
+    END IF;
+
+    IF new_purposes IS NOT NULL THEN
+        UPDATE rss SET Purposes = new_purposes WHERE id = entry_id;
+    END IF;
+END
+
+-- RX
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `EditRXEntry`(
+    IN entry_id INT,
+    IN new_make VARCHAR(255),
+    IN new_model VARCHAR(255),
+    IN new_serial_no VARCHAR(255),
+    IN new_equipment_use VARCHAR(255),
+    IN new_location VARCHAR(255),
+    IN new_rss VARCHAR(255),
+    IN new_custodian VARCHAR(255),
+    IN new_last_seen VARCHAR(255),
+    IN new_rc_notified VARCHAR(255),
+    IN new_specs_1 VARCHAR(255),
+    IN new_specs_2 VARCHAR(255),
+    IN new_specs_3 VARCHAR(255),
+    IN new_specs_4 VARCHAR(255),
+    IN new_comments VARCHAR(255)
+)
+BEGIN
+    -- Check if any of the input parameters are not null and update the corresponding columns
+    IF new_make IS NOT NULL THEN
+        UPDATE rx SET Make = new_make WHERE id = entry_id;
+    END IF;
+
+    IF new_model IS NOT NULL THEN
+        UPDATE rx SET Model = new_model WHERE id = entry_id;
+    END IF;
+
+    IF new_serial_no IS NOT NULL THEN
+        UPDATE rx SET `Serial no` = new_serial_no WHERE id = entry_id;
+    END IF;
+
+    IF new_equipment_use IS NOT NULL THEN
+        UPDATE rx SET `Equipment use` = new_equipment_use WHERE id = entry_id;
+    END IF;
+
+    IF new_location IS NOT NULL THEN
+        UPDATE rx SET Location = new_location WHERE id = entry_id;
+    END IF;
+
+    IF new_rss IS NOT NULL THEN
+        UPDATE rx SET RSS = new_rss WHERE id = entry_id;
+    END IF;
+
+    IF new_custodian IS NOT NULL THEN
+        UPDATE rx SET Custodian = new_custodian WHERE id = entry_id;
+    END IF;
+
+    IF new_last_seen IS NOT NULL THEN
+        UPDATE rx SET `Last seen` = new_last_seen WHERE id = entry_id;
+    END IF;
+
+    IF new_rc_notified IS NOT NULL THEN
+        UPDATE rx SET `RC notified` = new_rc_notified WHERE id = entry_id;
+    END IF;
+
+    IF new_specs_1 IS NOT NULL THEN
+        UPDATE rx SET `Specs 1` = new_specs_1 WHERE id = entry_id;
+    END IF;
+
+    IF new_specs_2 IS NOT NULL THEN
+        UPDATE rx SET `Specs 2` = new_specs_2 WHERE id = entry_id;
+    END IF;
+
+    IF new_specs_3 IS NOT NULL THEN
+        UPDATE rx SET `Specs 3` = new_specs_3 WHERE id = entry_id;
+    END IF;
+
+    IF new_specs_4 IS NOT NULL THEN
+        UPDATE rx SET `Specs 4` = new_specs_4 WHERE id = entry_id;
+    END IF;
+
+    IF new_comments IS NOT NULL THEN
+        UPDATE rx SET Comments = new_comments WHERE id = entry_id;
+    END IF;
+END
+
+
+

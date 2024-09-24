@@ -1,0 +1,425 @@
+DELIMITER //
+
+DROP PROCEDURE IF EXISTS AddRSEntry;
+DROP PROCEDURE IF EXISTS MoveToRSArchive;
+DROP PROCEDURE IF EXISTS MoveFromRSArchive;
+DROP PROCEDURE IF EXISTS SortByLastSeen_RS;
+DROP PROCEDURE IF EXISTS SortByRCNotified_RS;
+DROP PROCEDURE IF EXISTS SortByIsotope_RS;
+DROP PROCEDURE IF EXISTS SortByQuantity_RS;
+DROP PROCEDURE IF EXISTS SortByForm_RS;
+DROP PROCEDURE IF EXISTS SortByForm_Purpose;
+DROP PROCEDURE IF EXISTS SortByManufacturer_RS;
+DROP PROCEDURE IF EXISTS SortByModel_RS;
+DROP PROCEDURE IF EXISTS SortBySerialNo_RS;
+DROP PROCEDURE IF EXISTS SortByLocation_RS;
+DROP PROCEDURE IF EXISTS SortByCustodian_RS;
+DROP PROCEDURE IF EXISTS SortByComments_RS;
+DROP PROCEDURE IF EXISTS SortByRSS_RS;
+DROP PROCEDURE IF EXISTS UpdateIsotope_RS;
+DROP PROCEDURE IF EXISTS UpdateQuantity_RS;
+DROP PROCEDURE IF EXISTS UpdateForm_RS;
+DROP PROCEDURE IF EXISTS UpdatePurpose_RS;
+DROP PROCEDURE IF EXISTS UpdateManufacturer_RS;
+DROP PROCEDURE IF EXISTS UpdateModel_RS;
+DROP PROCEDURE IF EXISTS UpdateSerialNo_RS;
+DROP PROCEDURE IF EXISTS UpdateLocation_RS;
+DROP PROCEDURE IF EXISTS UpdateRSS_RS;
+DROP PROCEDURE IF EXISTS UpdateCustodian_RS;
+DROP PROCEDURE IF EXISTS UpdateLastSeen_RS;
+DROP PROCEDURE IF EXISTS UpdateRCNotified_RS;
+DROP PROCEDURE IF EXISTS UpdateComments_RS;
+
+--CREATE
+# Adding a New Entry in RS table
+
+CREATE PROCEDURE AddRSEntry (
+    IN isotope_param VARCHAR(255),
+    IN quantity_param VARCHAR(255),
+    IN form_param VARCHAR(255),
+    IN purpose_param VARCHAR(255),
+    IN manufacturer_param VARCHAR(255),
+    IN model_param VARCHAR(255),
+    IN serial_no_param VARCHAR(255),
+    IN location_param VARCHAR(255),
+    IN rss_param VARCHAR(255),
+    IN custodian_param VARCHAR(255),
+    IN last_seen_param VARCHAR(255),
+    IN rc_notified_param VARCHAR(255),
+    IN comments_param VARCHAR(255)
+)
+BEGIN
+    INSERT INTO `rs` (
+        `Isotope`, `Quantity`, `Form`, `Purpose`, `Manufacturer`, `Model`,
+        `Serial no`, `Location`, `RSS`, `Custodian`, `Last_Seen`, `RC_Notified`, `Comments`
+    ) VALUES (
+        isotope_param, quantity_param, form_param, purpose_param, manufacturer_param, model_param,
+        serial_no_param, location_param, rss_param, custodian_param, last_seen_param, rc_notified_param, comments_param
+    );
+END //
+
+
+-- Read
+
+-- Procedure to sort by Last Seen
+CREATE PROCEDURE SortByLastSeen_RS()
+BEGIN
+    SELECT *
+    FROM rs
+    ORDER BY STR_TO_DATE(`Last_Seen`, '%d/%m/%Y') DESC;
+END //
+
+-- Procedure to sort by RC Notified
+CREATE PROCEDURE SortByRCNotified_RS()
+BEGIN
+    SELECT *
+    FROM rs
+    ORDER BY `RC_Notified`;
+END //
+
+-- Procedure to sort by Isotope
+CREATE PROCEDURE SortByIsotope_RS()
+BEGIN
+    SELECT *
+    FROM rs
+    ORDER BY `Isotope`;
+END //
+
+-- Procedure to sort by Quantity
+CREATE PROCEDURE SortByQuantity_RS()
+BEGIN
+    SELECT *
+    FROM rs
+    ORDER BY `Quantity`;
+END //
+
+-- Procedure to sort by Form
+CREATE PROCEDURE SortByForm_RS()
+BEGIN
+    SELECT *
+    FROM rs
+    ORDER BY `Form`;
+END //
+
+-- Procedure to sort by Purpose
+CREATE PROCEDURE SortByForm_Purpose()
+BEGIN
+    SELECT * 
+    FROM rs 
+    ORDER BY `Purpose`;
+END //
+
+
+-- Procedure to sort by Manufacturer
+CREATE PROCEDURE SortByManufacturer_RS()
+BEGIN
+    SELECT *
+    FROM rs
+    ORDER BY `Manufacturer`;
+END //
+
+-- Procedure to sort by Model
+CREATE PROCEDURE SortByModel_RS()
+BEGIN
+    SELECT *
+    FROM rs
+    ORDER BY `Model`;
+END //
+
+-- Procedure to sort by Serial no
+CREATE PROCEDURE SortBySerialNo_RS()
+BEGIN
+    SELECT *
+    FROM rs
+    ORDER BY `Serial no`;
+END //
+
+-- Procedure to sort by Location
+CREATE PROCEDURE SortByLocation_RS()
+BEGIN
+    SELECT *
+    FROM rs
+    ORDER BY `Location`;
+END //
+
+-- Procedure to sort by Custodian
+CREATE PROCEDURE SortByCustodian_RS()
+BEGIN
+    SELECT *
+    FROM rs
+    ORDER BY `Custodian`;
+END //
+
+-- Procedure to sort by Comments
+CREATE PROCEDURE SortByComments_RS()
+BEGIN
+    SELECT *
+    FROM rs
+    ORDER BY `Comments`;
+END //
+
+-- Procedure to sort by RSS
+CREATE PROCEDURE SortByRSS_RS()
+BEGIN
+    SELECT *
+    FROM rs
+    ORDER BY `RSS`;
+END //
+
+
+-- Update
+
+-- Procedure to update Isotope field
+CREATE PROCEDURE UpdateIsotope_RS(
+    IN old_isotope VARCHAR(255),
+    IN new_isotope VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `Isotope` = new_isotope
+    WHERE `Isotope` = old_isotope;
+END //
+
+-- Procedure to update Quantity field
+CREATE PROCEDURE UpdateQuantity_RS(
+    IN old_quantity VARCHAR(255),
+    IN new_quantity VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `Quantity` = new_quantity
+    WHERE `Quantity` = old_quantity;
+END //
+
+-- Procedure to update Form field
+CREATE PROCEDURE UpdateForm_RS(
+    IN old_form VARCHAR(255),
+    IN new_form VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `Form` = new_form
+    WHERE `Form` = old_form;
+END //
+
+-- Procedure to update Purpose field
+CREATE PROCEDURE UpdatePurpose_RS(
+    IN old_purpose VARCHAR(255),
+    IN new_purpose VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `Purpose` = new_purpose
+    WHERE `Purpose` = old_purpose;
+END //
+
+-- Procedure to update Manufacturer field
+CREATE PROCEDURE UpdateManufacturer_RS(
+    IN old_manufacturer VARCHAR(255),
+    IN new_manufacturer VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `Manufacturer` = new_manufacturer
+    WHERE `Manufacturer` = old_manufacturer;
+END //
+
+-- Procedure to update Model field
+CREATE PROCEDURE UpdateModel_RS(
+    IN old_model VARCHAR(255),
+    IN new_model VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `Model` = new_model
+    WHERE `Model` = old_model;
+END //
+
+-- Procedure to update Serial no field
+CREATE PROCEDURE UpdateSerialNo_RS(
+    IN old_serial_no VARCHAR(255),
+    IN new_serial_no VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `Serial no` = new_serial_no
+    WHERE `Serial no` = old_serial_no;
+END //
+
+-- Procedure to update Location field
+CREATE PROCEDURE UpdateLocation_RS(
+    IN old_location VARCHAR(255),
+    IN new_location VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `Location` = new_location
+    WHERE `Location` = old_location;
+END //
+
+-- Procedure to update RSS field
+CREATE PROCEDURE UpdateRSS_RS(
+    IN old_rss VARCHAR(255),
+    IN new_rss VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `RSS` = new_rss
+    WHERE `RSS` = old_rss;
+END //
+
+-- Procedure to update Custodian field
+CREATE PROCEDURE UpdateCustodian_RS(
+    IN old_custodian VARCHAR(255),
+    IN new_custodian VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `Custodian` = new_custodian
+    WHERE `Custodian` = old_custodian;
+END //
+
+-- Procedure to update Last Seen field
+CREATE PROCEDURE UpdateLastSeen_RS(
+    IN old_last_seen VARCHAR(255),
+    IN new_last_seen VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `Last Seen` = new_last_seen
+    WHERE `Last Seen` = old_last_seen;
+END //
+
+-- Procedure to update RC Notified field
+CREATE PROCEDURE UpdateRCNotified_RS(
+    IN old_rc_notified VARCHAR(255),
+    IN new_rc_notified VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `RC Notified` = new_rc_notified
+    WHERE `RC Notified` = old_rc_notified;
+END //
+
+-- Procedure to update Comments field
+CREATE PROCEDURE UpdateComments_RS(
+    IN old_comments VARCHAR(255),
+    IN new_comments VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `Comments` = new_comments
+    WHERE `Comments` = old_comments;
+END //
+
+
+CREATE PROCEDURE UpdateEntireEntryRS (
+    IN id_param INT,
+    IN isotope_param VARCHAR(255),
+    IN quantity_param VARCHAR(255),
+    IN form_param VARCHAR(255),
+    IN purpose_param VARCHAR(255),
+    IN manufacturer_param VARCHAR(255),
+    IN model_param VARCHAR(255),
+    IN serial_no_param VARCHAR(255),
+    IN location_param VARCHAR(255),
+    IN rss_param VARCHAR(255),
+    IN custodian_param VARCHAR(255),
+    IN last_seen_param VARCHAR(255),
+    IN rc_notified_param VARCHAR(255),
+    IN comments_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `rs`
+    SET 
+        `Isotope` = isotope_param,
+        `Quantity` = quantity_param,
+        `Form` = form_param,
+        `Purpose` = purpose_param,
+        `Manufacturer` = manufacturer_param,
+        `Model` = model_param,
+        `Serial no` = serial_no_param,
+        `Location` = location_param,
+        `RSS` = rss_param,
+        `Custodian` = custodian_param,
+        `Last_Seen` = last_seen_param,
+        `RC_Notified` = rc_notified_param,
+        `Comments` = comments_param
+    WHERE `id` = id_param;
+END //
+
+-- Move Entry into RS Archive table
+
+CREATE PROCEDURE MoveToRSArchive(
+    IN id_param INT
+)
+BEGIN
+    DECLARE isotope_var VARCHAR(255);
+    DECLARE quantity_var VARCHAR(255);
+    DECLARE form_var VARCHAR(255);
+    DECLARE purpose_var VARCHAR(255);
+    DECLARE manufacturer_var VARCHAR(255);
+    DECLARE model_var VARCHAR(255);
+    DECLARE serial_no_var VARCHAR(255);
+    DECLARE location_var VARCHAR(255);
+    DECLARE rss_var VARCHAR(255);
+    DECLARE custodian_var VARCHAR(255);
+    DECLARE last_seen_var VARCHAR(255);
+    DECLARE rc_notified_var VARCHAR(255);
+    DECLARE comments_var VARCHAR(255);
+    
+    -- Select the entry to be moved from RS table
+    SELECT `Isotope`, `Quantity`, `Form`, `Purpose`, `Manufacturer`, `Model`, `Serial no`, `Location`, `RSS`, `Custodian`, `Last_Seen`, `RC_Notified`, `Comments`
+    INTO isotope_var, quantity_var, form_var, purpose_var, manufacturer_var, model_var, serial_no_var, location_var, rss_var, custodian_var, last_seen_var, rc_notified_var, comments_var
+    FROM `rs`
+    WHERE `id` = id_param;
+
+    -- Insert the selected entry into RS Archive table
+    INSERT INTO `rs_archive` (`Isotope`, `Quantity`, `Form`, `Purpose`, `Manufacturer`, `Model`, `Serial no`, `Location`, `RSS`, `Custodian`, `Last_Seen`, `RC_Notified`, `Comments`)
+    VALUES (isotope_var, quantity_var, form_var, purpose_var, manufacturer_var, model_var, serial_no_var, location_var, rss_var, custodian_var, last_seen_var, rc_notified_var, comments_var);
+    
+    -- Delete the entry from RS table
+    DELETE FROM `rs`
+    WHERE `id` = id_param;
+END //
+
+
+
+
+-- Move Entry from RS Archive table
+
+CREATE PROCEDURE `MoveFromRSArchive`(
+    IN id_param INT
+)
+BEGIN
+    -- Declare variables
+    DECLARE new_id INT;
+
+    -- Get the maximum id from the RS table
+    SET new_id = (SELECT COALESCE(MAX(`id`), 0) FROM `rs`);
+
+    -- Check if the maximum id is NULL (i.e., if the RS table is empty)
+    IF new_id IS NULL THEN
+        SET new_id = 0;
+    END IF;
+
+    -- Increment new_id by 1 to get the new id for the moved entry
+    SET new_id = new_id + 1;
+
+    -- Insert the entry into the RS table with the new id
+    INSERT INTO `rs` (`id`, `Isotope`, `Quantity`, `Form`, `Purpose`, `Manufacturer`, `Model`, `Serial no`, `Location`, `RSS`, `Custodian`, `Last_Seen`, `RC_Notified`, `Comments`)
+    SELECT new_id, `Isotope`, `Quantity`, `Form`, `Purpose`, `Manufacturer`, `Model`, `Serial no`, `Location`, `RSS`, `Custodian`, `Last_Seen`, `RC_Notified`, `Comments`
+    FROM `rs_archive`
+    WHERE `id` = id_param;
+
+    -- Delete the entry from the RS Archive table
+    DELETE FROM `rs_archive`
+    WHERE `id` = id_param;
+    
+    -- Reorder the IDs in the RS table to ensure sequential IDs
+    SET @counter := 0;
+    UPDATE `rs` SET `id` = @counter := @counter + 1;
+END //
+
+DELIMITER ;
+

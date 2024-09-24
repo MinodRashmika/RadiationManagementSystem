@@ -1,0 +1,246 @@
+DROP PROCEDURE IF EXISTS AddRSSEntry;
+DROP PROCEDURE IF EXISTS SortByName_RSS;
+DROP PROCEDURE IF EXISTS SortByEmail_RSS;
+DROP PROCEDURE IF EXISTS SortByPhone_RSS;
+DROP PROCEDURE IF EXISTS SortByLocation_RSS;
+DROP PROCEDURE IF EXISTS SortBySchool_RSS;
+DROP PROCEDURE IF EXISTS SortByHeadOfSchool_RSS;
+DROP PROCEDURE IF EXISTS SortByPurposes_RSS;
+DROP PROCEDURE IF EXISTS MoveToRSSArchive;
+DROP PROCEDURE IF EXISTS MoveFromRSSArchive;
+
+
+
+DELIMITER //
+
+
+CREATE PROCEDURE AddRSSEntry (
+    IN name_param VARCHAR(255),
+    IN email_param VARCHAR(255),
+    IN phone_param VARCHAR(255),
+    IN location_param VARCHAR(255),
+    IN school_param VARCHAR(255),
+    IN head_of_school_param VARCHAR(255),
+    IN purposes_param VARCHAR(255)
+)
+BEGIN
+    INSERT INTO `rss` (`Name`, `Email`, `Phone`, `Location`, `School`, `Head of School`, `Purposes`)
+    VALUES (name_param, email_param, phone_param, location_param, school_param, head_of_school_param, purposes_param);
+END //
+
+
+-- Procedure to view by Name
+CREATE PROCEDURE SortByName_RSS()
+BEGIN
+    SELECT *
+    FROM `RSS`
+    ORDER BY `Name`;
+END //
+
+-- Procedure to view by Email
+CREATE PROCEDURE SortByEmail_RSS()
+BEGIN
+    SELECT *
+    FROM `RSS`
+    ORDER BY `Email`;
+END //
+
+-- Procedure to view by Phone
+CREATE PROCEDURE SortByPhone_RSS()
+BEGIN
+    SELECT *
+    FROM `RSS`
+    ORDER BY `Phone`;
+END //
+
+-- Procedure to view by Location
+CREATE PROCEDURE SortByLocation_RSS()
+BEGIN
+    SELECT *
+    FROM `RSS`
+    ORDER BY `Location`;
+END //
+
+-- Procedure to view by School
+CREATE PROCEDURE SortBySchool_RSS()
+BEGIN
+    SELECT *
+    FROM `RSS`
+    ORDER BY `School`;
+END //
+
+-- Procedure to view by Head of School
+CREATE PROCEDURE SortByHeadOfSchool_RSS()
+BEGIN
+    SELECT *
+    FROM `RSS`
+    ORDER BY `Head of School`;
+END //
+
+-- Procedure to view by Purposes
+CREATE PROCEDURE SortByPurposes_RSS()
+BEGIN
+    SELECT *
+    FROM `RSS`
+    ORDER BY `Purposes`;
+END //
+
+#Updates 
+-- Update Name in RSS table
+DELIMITER //
+CREATE PROCEDURE UpdateRSSName(
+    IN id_param INT,
+    IN name_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `rss` SET `Name` = name_param WHERE `id` = id_param;
+END //
+
+-- Update Email in RSS table
+CREATE PROCEDURE UpdateRSSEmail(
+    IN id_param INT,
+    IN email_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `rss` SET `Email` = email_param WHERE `id` = id_param;
+END //
+
+-- Update Phone in RSS table
+CREATE PROCEDURE UpdateRSSPhone(
+    IN id_param INT,
+    IN phone_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `rss` SET `Phone` = phone_param WHERE `id` = id_param;
+END //
+
+-- Update Location in RSS table
+CREATE PROCEDURE UpdateRSSLocation(
+    IN id_param INT,
+    IN location_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `rss` SET `Location` = location_param WHERE `id` = id_param;
+END //
+
+-- Update School in RSS table
+CREATE PROCEDURE UpdateRSSSchool(
+    IN id_param INT,
+    IN school_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `rss` SET `School` = school_param WHERE `id` = id_param;
+END //
+
+-- Update Head of School in RSS table
+CREATE PROCEDURE UpdateRSSHeadOfSchool(
+    IN id_param INT,
+    IN head_of_school_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `rss` SET `Head of School` = head_of_school_param WHERE `id` = id_param;
+END //
+
+-- Update Purposes in RSS table
+CREATE PROCEDURE UpdateRSSPurposes(
+    IN id_param INT,
+    IN purposes_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `rss` SET `Purposes` = purposes_param WHERE `id` = id_param;
+END //
+
+#Update all fields in RSS table
+
+
+CREATE PROCEDURE UpdateRSSEntry(
+    IN id_param INT,
+    IN name_param VARCHAR(255),
+    IN email_param VARCHAR(255),
+    IN phone_param VARCHAR(255),
+    IN location_param VARCHAR(255),
+    IN school_param VARCHAR(255),
+    IN head_of_school_param VARCHAR(255),
+    IN purposes_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `rss`
+    SET
+        `Name` = name_param,
+        `Email` = email_param,
+        `Phone` = phone_param,
+        `Location` = location_param,
+        `School` = school_param,
+        `Head of School` = head_of_school_param,
+        `Purposes` = purposes_param
+    WHERE `id` = id_param;
+END //
+-- Move Entry to RSS Archive table
+
+CREATE PROCEDURE MoveToRSSArchive(
+    IN id_param INT
+)
+BEGIN
+    -- Declare variables
+    DECLARE name_var VARCHAR(255);
+    DECLARE email_var VARCHAR(255);
+    DECLARE phone_var VARCHAR(255);
+    DECLARE location_var VARCHAR(255);
+    DECLARE school_var VARCHAR(255);
+    DECLARE head_of_school_var VARCHAR(255);
+    DECLARE purposes_var VARCHAR(255);
+    
+    -- Select the entry to be moved from RSS table
+    SELECT `Name`, `Email`, `Phone`, `Location`, `School`, `Head of School`, `Purposes`
+    INTO name_var, email_var, phone_var, location_var, school_var, head_of_school_var, purposes_var
+    FROM `rss`
+    WHERE `id` = id_param;
+
+    -- Insert the selected entry into RSS Archive table
+    INSERT INTO `rss_archive` (`Name`, `Email`, `Phone`, `Location`, `School`, `Head of School`, `Purposes`)
+    VALUES (name_var, email_var, phone_var, location_var, school_var, head_of_school_var, purposes_var);
+    
+    -- Delete the entry from the RSS table
+    DELETE FROM `rss`
+    WHERE `id` = id_param;
+END //
+
+
+
+-- Move Entry from RSS Archive table
+
+
+CREATE PROCEDURE `MoveFromRSSArchive`(
+    IN id_param INT
+)
+BEGIN
+    -- Declare variables
+    DECLARE new_id INT;
+
+    -- Get the maximum id from the RSS table
+    SET new_id = (SELECT COALESCE(MAX(`id`), 0) FROM `rss`);
+
+    -- Check if the maximum id is NULL (i.e., if the RSS table is empty)
+    IF new_id IS NULL THEN
+        SET new_id = 0;
+    END IF;
+
+    -- Increment new_id by 1 to get the new id for the moved entry
+    SET new_id = new_id + 1;
+
+    -- Insert the entry into the RSS table with the new id
+    INSERT INTO `rss` (`id`, `Name`, `Email`, `Phone`, `Location`, `School`, `Head of School`, `Purposes`)
+    SELECT new_id, `Name`, `Email`, `Phone`, `Location`, `School`, `Head of School`, `Purposes`
+    FROM `rss_archive`
+    WHERE `id` = id_param;
+
+    -- Delete the entry from the RSS Archive table
+    DELETE FROM `rss_archive`
+    WHERE `id` = id_param;
+
+    -- Reorder the IDs in the RSS table to ensure sequential IDs
+    SET @counter := 0;
+    UPDATE `rss` SET `id` = @counter := @counter + 1 WHERE `id` > 0;
+END //
+
+DELIMITER ;

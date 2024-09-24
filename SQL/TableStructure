@@ -1,0 +1,94 @@
+-- updated with id column structure
+
+
+CREATE TABLE `rs` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `Isotope` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Quantity` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Form` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Purpose` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Manufacturer` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Model` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Serial no` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Location` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `RSS` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Custodian` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Last_Seen` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `RC_Notified` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  `Comments` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+CREATE TABLE `rx` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `Make` varchar(255) DEFAULT NULL,
+  `Model` varchar(255) DEFAULT NULL,
+  `Serial no` varchar(255) DEFAULT NULL,
+  `Equipment use` varchar(255) DEFAULT NULL,
+  `Location` varchar(255) DEFAULT NULL,
+  `RSS` varchar(255) DEFAULT NULL,
+  `Custodian` varchar(255) DEFAULT NULL,
+  `Last seen` varchar(255) DEFAULT NULL,
+  `RC notified` varchar(255) DEFAULT NULL,
+  `Specs 1` varchar(255) DEFAULT NULL,
+  `Specs 2` varchar(255) DEFAULT NULL,
+  `Specs 3` varchar(255) DEFAULT NULL,
+  `Specs 4` varchar(255) DEFAULT NULL,
+  `Comments` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=37 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+CREATE TABLE `lx` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `Name (first)` varchar(255) DEFAULT NULL,
+  `Name (last)` varchar(255) DEFAULT NULL,
+  `Email` varchar(255) DEFAULT NULL,
+  `Phone` varchar(255) DEFAULT NULL,
+  `Location` varchar(255) DEFAULT NULL,
+  `License no` varchar(255) DEFAULT NULL,
+  `Sequence no` varchar(255) DEFAULT NULL,
+  `Expiry` varchar(255) DEFAULT NULL,
+  `Purposes` varchar(255) DEFAULT NULL,
+  `RSS` varchar(255) DEFAULT NULL,
+  `Comments` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+CREATE TABLE `ls` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `Name (first)` varchar(255) DEFAULT NULL,
+  `Name (last)` varchar(255) DEFAULT NULL,
+  `Email` varchar(255) DEFAULT NULL,
+  `Phone` varchar(255) DEFAULT NULL,
+  `Location` varchar(255) DEFAULT NULL,
+  `License no` varchar(255) DEFAULT NULL,
+  `Sequence no` varchar(255) DEFAULT NULL,
+  `Expiry` varchar(255) DEFAULT NULL,
+  `Purposes` varchar(255) DEFAULT NULL,
+  `RSS` varchar(255) DEFAULT NULL,
+  `Comments` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+CREATE TABLE `rss` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `Name` varchar(255) DEFAULT NULL,
+  `Email` varchar(255) DEFAULT NULL,
+  `Phone` varchar(255) DEFAULT NULL,
+  `Location` varchar(255) DEFAULT NULL,
+  `School` varchar(255) DEFAULT NULL,
+  `Head of School` varchar(255) DEFAULT NULL,
+  `Purposes` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci
+
+
+CREATE TABLE RX_Archive LIKE RX; --Makes archive table to store "deleted" entries from RX
+
+CREATE TABLE RS_Archive LIKE RS; --Makes archive table to store "deleted" entries from RS
+
+CREATE TABLE LS_Archive LIKE ls; --Makes archive table to store "deleted" entries from ls
+
+CREATE TABLE LX_Archive LIKE lx; --Makes archive table to store "deleted" entries from lx
+
+CREATE TABLE RSS_Archive LIKE RSS; --Makes archive table to store "deleted" entries from lx

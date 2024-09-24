@@ -1,0 +1,373 @@
+CREATE PROCEDURE AddRXEntry (
+    IN make_param VARCHAR(255),
+    IN model_param VARCHAR(255),
+    IN serial_no_param VARCHAR(255),
+    IN equipment_use_param VARCHAR(255),
+    IN location_param VARCHAR(255),
+    IN rss_param VARCHAR(255),
+    IN custodian_param VARCHAR(255),
+    IN last_seen_param VARCHAR(255),
+    IN rc_notified_param VARCHAR(255),
+    IN specs_1_param VARCHAR(255),
+    IN specs_2_param VARCHAR(255),
+    IN specs_3_param VARCHAR(255),
+    IN specs_4_param VARCHAR(255),
+    IN comments_param VARCHAR(255)
+)
+BEGIN
+    INSERT INTO `rx` (
+        `Make`, `Model`, `Serial no`, `Equipment use`, `Location`, `RSS`, `Custodian`,
+        `Last seen`, `RC notified`, `Specs 1`, `Specs 2`, `Specs 3`, `Specs 4`, `Comments`
+    ) VALUES (
+        make_param, model_param, serial_no_param, equipment_use_param, location_param, rss_param, custodian_param,
+        last_seen_param, rc_notified_param, specs_1_param, specs_2_param, specs_3_param, specs_4_param, comments_param
+    );
+END
+
+
+
+
+CREATE PROCEDURE SortByMake_RX()
+BEGIN
+    SELECT * FROM rx ORDER BY Make;
+END
+
+
+CREATE PROCEDURE SortByModel_RX()
+BEGIN
+    SELECT * FROM rx ORDER BY Model;
+END
+
+
+CREATE PROCEDURE SortBySerialNo_RX()
+BEGIN
+    SELECT * FROM rx ORDER BY `Serial no`;
+ END
+
+
+CREATE PROCEDURE SortByEquipmentUse_RX()
+BEGIN
+    SELECT * FROM rx ORDER BY `Equipment use`;
+ END
+
+
+CREATE PROCEDURE SortByLocation_RX()
+BEGIN
+    SELECT * FROM rx ORDER BY Location;
+ END
+
+
+CREATE PROCEDURE SortByRSS_RX()
+BEGIN
+    SELECT * FROM rx ORDER BY RSS;
+ END
+
+
+CREATE PROCEDURE SortByCustodian_RX()
+BEGIN
+    SELECT * FROM rx ORDER BY Custodian;
+ END
+
+
+CREATE PROCEDURE SortByLastSeen_RX()
+BEGIN
+    SELECT *
+    FROM rx
+    ORDER BY STR_TO_DATE(`Last seen`, '%d/%m/%Y') DESC;
+ END
+
+
+CREATE PROCEDURE SortByRCNotified_RX()
+BEGIN
+    SELECT * FROM rx ORDER BY `RC notified`;
+ END
+
+
+CREATE PROCEDURE SortBySpecs1_RX()
+BEGIN
+    SELECT * FROM rx ORDER BY `Specs 1`;
+ END
+
+
+CREATE PROCEDURE SortBySpecs2_RX()
+BEGIN
+    SELECT * FROM rx ORDER BY `Specs 2`;
+ END
+
+
+CREATE PROCEDURE SortBySpecs3_RX()
+BEGIN
+    SELECT * FROM rx ORDER BY `Specs 3`;
+ END
+
+
+CREATE PROCEDURE SortBySpecs4_RX()
+BEGIN
+    SELECT * FROM rx ORDER BY `Specs 4`;
+ END
+
+
+CREATE PROCEDURE SortByComments_RX()
+BEGIN
+    SELECT * FROM rx ORDER BY Comments;
+ END
+
+
+
+CREATE PROCEDURE UpdateMake_RX(
+    IN id_param INT,
+    IN new_make VARCHAR(255)
+)
+BEGIN
+    UPDATE RX
+    SET `Make` = new_make
+    WHERE `id` = id_param;
+ END
+
+
+CREATE PROCEDURE UpdateModel_RX(
+    IN id_param INT,
+    IN new_model VARCHAR(255)
+)
+BEGIN
+    UPDATE RX
+    SET `Model` = new_model
+    WHERE `id` = id_param;
+ END
+
+
+CREATE PROCEDURE UpdateSerialNo_RX(
+    IN id_param INT,
+    IN new_serial_no VARCHAR(255)
+)
+BEGIN
+    UPDATE RX
+    SET `Serial no` = new_serial_no
+    WHERE `id` = id_param;
+ END
+
+
+CREATE PROCEDURE UpdateEquipmentUse_RX(
+    IN id_param INT,
+    IN new_equipment_use VARCHAR(255)
+)
+BEGIN
+    UPDATE RX
+    SET `Equipment use` = new_equipment_use
+    WHERE `id` = id_param;
+ END
+
+
+CREATE PROCEDURE UpdateRSS_RX(
+    IN id_param INT,
+    IN new_rss VARCHAR(255)
+)
+BEGIN
+    UPDATE RX
+    SET `RSS` = new_rss
+    WHERE `id` = id_param;
+ END
+
+
+
+CREATE PROCEDURE UpdateCustodian_RX(
+    IN id_param INT,
+    IN new_custodian VARCHAR(255)
+)
+BEGIN
+    UPDATE RX
+    SET `Custodian` = new_custodian
+    WHERE `id` = id_param;
+ END
+
+
+CREATE PROCEDURE UpdateLastSeen_RX(
+    IN id_param INT,
+    IN new_last_seen VARCHAR(255)
+)
+BEGIN
+    UPDATE RX
+    SET `Last seen` = new_last_seen
+    WHERE `id` = id_param;
+ END
+
+
+CREATE PROCEDURE UpdateRCNotified_RX(
+    IN id_param INT,
+    IN new_rc_notified VARCHAR(255)
+)
+BEGIN
+    UPDATE RX
+    SET `RC notified` = new_rc_notified
+    WHERE `id` = id_param;
+ END
+
+
+CREATE PROCEDURE UpdateSpecs1_RX(
+    IN id_param INT,
+    IN new_specs_1 VARCHAR(255)
+)
+BEGIN
+    UPDATE RX
+    SET `Specs 1` = new_specs_1
+    WHERE `id` = id_param;
+ END
+
+
+CREATE PROCEDURE UpdateSpecs2_RX(
+    IN id_param INT,
+    IN new_specs_2 VARCHAR(255)
+)
+BEGIN
+    UPDATE RX
+    SET `Specs 2` = new_specs_2
+    WHERE `id` = id_param;
+ END
+
+
+CREATE PROCEDURE UpdateSpecs3_RX(
+    IN id_param INT,
+    IN new_specs_3 VARCHAR(255)
+)
+BEGIN
+    UPDATE RX
+    SET `Specs 3` = new_specs_3
+    WHERE `id` = id_param;
+ END
+
+
+CREATE PROCEDURE UpdateSpecs4_RX(
+    IN id_param INT,
+    IN new_specs_4 VARCHAR(255)
+)
+BEGIN
+    UPDATE RX
+    SET `Specs 4` = new_specs_4
+    WHERE `id` = id_param;
+ END
+
+
+CREATE PROCEDURE UpdateComments_RX(
+    IN id_param INT,
+    IN new_comments VARCHAR(255)
+)
+BEGIN
+    UPDATE RX
+    SET `Comments` = new_comments
+    WHERE `id` = id_param;
+ END
+
+
+CREATE PROCEDURE UpdateRXEntry(
+    IN id_param INT,
+    IN make_param VARCHAR(255),
+    IN model_param VARCHAR(255),
+    IN serial_no_param VARCHAR(255),
+    IN equipment_use_param VARCHAR(255),
+    IN location_param VARCHAR(255),
+    IN rss_param VARCHAR(255),
+    IN custodian_param VARCHAR(255),
+    IN last_seen_param VARCHAR(255),
+    IN rc_notified_param VARCHAR(255),
+    IN specs_1_param VARCHAR(255),
+    IN specs_2_param VARCHAR(255),
+    IN specs_3_param VARCHAR(255),
+    IN specs_4_param VARCHAR(255),
+    IN comments_param VARCHAR(255)
+)
+BEGIN
+    UPDATE RX
+    SET `Make` = make_param,
+        `Model` = model_param,
+        `Serial no` = serial_no_param,
+        `Equipment use` = equipment_use_param,
+        `Location` = location_param,
+        `RSS` = rss_param,
+        `Custodian` = custodian_param,
+        `Last seen` = last_seen_param,
+        `RC notified` = rc_notified_param,
+        `Specs 1` = specs_1_param,
+        `Specs 2` = specs_2_param,
+        `Specs 3` = specs_3_param,
+        `Specs 4` = specs_4_param,
+        `Comments` = comments_param
+    WHERE `id` = id_param;
+ END
+
+
+CREATE PROCEDURE MoveToRXArchive(
+    IN id_param INT
+)
+BEGIN
+    DECLARE make_var VARCHAR(255);
+    DECLARE model_var VARCHAR(255);
+    DECLARE serial_no_var VARCHAR(255);
+    DECLARE equipment_use_var VARCHAR(255);
+    DECLARE location_var VARCHAR(255);
+    DECLARE rss_var VARCHAR(255);
+    DECLARE custodian_var VARCHAR(255);
+    DECLARE last_seen_var VARCHAR(255);
+    DECLARE rc_notified_var VARCHAR(255);
+    DECLARE specs_1_var VARCHAR(255);
+    DECLARE specs_2_var VARCHAR(255);
+    DECLARE specs_3_var VARCHAR(255);
+    DECLARE specs_4_var VARCHAR(255);
+    DECLARE comments_var VARCHAR(255);
+    
+
+    SELECT `Make`, `Model`, `Serial no`, `Equipment use`, `Location`, `RSS`, `Custodian`,
+        `Last seen`, `RC notified`, `Specs 1`, `Specs 2`, `Specs 3`, `Specs 4`, `Comments`
+    INTO make_var, model_var, serial_no_var, equipment_use_var, location_var, rss_var, custodian_var,
+        last_seen_var, rc_notified_var, specs_1_var, specs_2_var, specs_3_var, specs_4_var, comments_var
+    FROM `rx`
+    WHERE `id` = id_param;
+
+
+    INSERT INTO `rx_archive` (`Make`, `Model`, `Serial no`, `Equipment use`, `Location`, `RSS`, `Custodian`,
+        `Last seen`, `RC notified`, `Specs 1`, `Specs 2`, `Specs 3`, `Specs 4`, `Comments`)
+    VALUES (make_var, model_var, serial_no_var, equipment_use_var, location_var, rss_var, custodian_var,
+        last_seen_var, rc_notified_var, specs_1_var, specs_2_var, specs_3_var, specs_4_var, comments_var);
+    
+
+    DELETE FROM `rx`
+    WHERE `id` = id_param;
+ END
+
+
+CREATE PROCEDURE `MoveFromRXArchive`(
+    IN id_param INT
+)
+BEGIN
+
+    DECLARE new_id INT;
+
+
+    SET new_id = (SELECT COALESCE(MAX(`id`), 0) FROM `rx`);
+
+
+    IF new_id IS NULL THEN
+        SET new_id = 0;
+    END IF;
+
+
+    SET new_id = new_id + 1;
+
+
+    INSERT INTO `rx` (`id`, `Make`, `Model`, `Serial no`, `Equipment use`, `Location`, `RSS`, `Custodian`,
+        `Last seen`, `RC notified`, `Specs 1`, `Specs 2`, `Specs 3`, `Specs 4`, `Comments`)
+    SELECT new_id, `Make`, `Model`, `Serial no`, `Equipment use`, `Location`, `RSS`, `Custodian`,
+        `Last seen`, `RC notified`, `Specs 1`, `Specs 2`, `Specs 3`, `Specs 4`, `Comments`
+    FROM `rx_archive`
+    WHERE `id` = id_param;
+
+
+    DELETE FROM `rx_archive`
+    WHERE `id` = id_param;
+    
+
+    SET @counter := 0;
+    UPDATE `rx` SET `id` = @counter := @counter + 1 WHERE `id` > 0;
+ END
+
+  
+

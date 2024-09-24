@@ -1,0 +1,345 @@
+DROP PROCEDURE IF EXISTS UpdateFirstName_LX;
+DROP PROCEDURE IF EXISTS UpdateLastName_LX;
+DROP PROCEDURE IF EXISTS UpdateEmail_LX;
+DROP PROCEDURE IF EXISTS UpdatePhone_LX;
+DROP PROCEDURE IF EXISTS UpdateLocation_LX;
+DROP PROCEDURE IF EXISTS UpdateLicenseNo_LX;
+DROP PROCEDURE IF EXISTS UpdateSequenceNo_LX;
+DROP PROCEDURE IF EXISTS UpdateExpiry_LX;
+DROP PROCEDURE IF EXISTS UpdatePurposes_LX;
+DROP PROCEDURE IF EXISTS UpdateRSS_LX;
+DROP PROCEDURE IF EXISTS UpdateComments_LX;
+DROP PROCEDURE IF EXISTS MoveToLXArchive;
+DROP PROCEDURE IF EXISTS MoveFromLXArchive;
+
+
+--ADD ENTRY
+
+DELIMITER //
+
+CREATE PROCEDURE AddLXEntry (
+    IN first_name_param VARCHAR(255),
+    IN last_name_param VARCHAR(255),
+    IN email_param VARCHAR(255),
+    IN phone_param VARCHAR(255),
+    IN location_param VARCHAR(255),
+    IN license_no_param VARCHAR(255),
+    IN sequence_no_param VARCHAR(255),
+    IN expiry_param VARCHAR(255),
+    IN purposes_param VARCHAR(255),
+    IN rss_param VARCHAR(255),
+    IN comments_param VARCHAR(255)
+)
+BEGIN
+    INSERT INTO `lx` (
+        `Name (first)`, `Name (last)`, `Email`, `Phone`, `Location`,
+        `License no`, `Sequence no`, `Expiry`, `Purposes`, `RSS`, `Comments`
+    ) VALUES (
+        first_name_param, last_name_param, email_param, phone_param, location_param,
+        license_no_param, sequence_no_param, expiry_param, purposes_param, rss_param, comments_param
+    );
+END //
+
+--VIEWING
+CREATE PROCEDURE SortByFirstName_LX()
+BEGIN
+    SELECT *
+    FROM LX
+    ORDER BY `Name (first)`;
+END //
+
+CREATE PROCEDURE SortByLastName_LX()
+BEGIN
+    SELECT *
+    FROM LX
+    ORDER BY `Name (last)`;
+END //
+
+CREATE PROCEDURE SortByEmail_LX()
+BEGIN
+    SELECT *
+    FROM LX
+    ORDER BY `Email`;
+END //
+
+CREATE PROCEDURE SortByPhone_LX()
+BEGIN
+    SELECT *
+    FROM LX
+    ORDER BY `Phone`;
+END //
+
+CREATE PROCEDURE SortByLocation_LX()
+BEGIN
+    SELECT *
+    FROM LX
+    ORDER BY `Location`;
+END //
+
+CREATE PROCEDURE SortByLicenseNo_LX()
+BEGIN
+    SELECT *
+    FROM LX
+    ORDER BY `License no`;
+END //
+
+CREATE PROCEDURE SortBySequenceNo_LX()
+BEGIN
+    SELECT *
+    FROM LX
+    ORDER BY `Sequence no`;
+END //
+
+CREATE PROCEDURE SortByExpiry_LX()
+BEGIN
+    SELECT *
+    FROM LX
+    ORDER BY STR_TO_DATE(`Expiry`, '%d/%m/%Y') DESC;
+END //
+
+CREATE PROCEDURE SortByPurposes_LX()
+BEGIN
+    SELECT *
+    FROM LX
+    ORDER BY `Purposes`;
+END //
+
+CREATE PROCEDURE SortByRSS_LX()
+BEGIN
+    SELECT *
+    FROM LX
+    ORDER BY `RSS`;
+END //
+
+CREATE PROCEDURE SortByComments_LX()
+BEGIN
+    SELECT *
+    FROM LX
+    ORDER BY `Comments`;
+END //
+
+
+
+-- Update 
+
+-- Procedure to update Name (first) for an LX entry
+CREATE PROCEDURE UpdateFirstName_LX(
+    IN id_param INT,
+    IN first_name_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `lx`
+    SET `Name (first)` = first_name_param
+    WHERE `id` = id_param;
+END //
+
+-- Procedure to update Name (last) for an LX entry
+CREATE PROCEDURE UpdateLastName_LX(
+    IN id_param INT,
+    IN last_name_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `lx`
+    SET `Name (last)` = last_name_param
+    WHERE `id` = id_param;
+END //
+
+-- Procedure to update Email for an LX entry
+CREATE PROCEDURE UpdateEmail_LX(
+    IN id_param INT,
+    IN email_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `lx`
+    SET `Email` = email_param
+    WHERE `id` = id_param;
+END //
+
+-- Procedure to update Phone for an LX entry
+CREATE PROCEDURE UpdatePhone_LX(
+    IN id_param INT,
+    IN phone_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `lx`
+    SET `Phone` = phone_param
+    WHERE `id` = id_param;
+END //
+
+-- Procedure to update Location for an LX entry
+CREATE PROCEDURE UpdateLocation_LX(
+    IN id_param INT,
+    IN location_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `lx`
+    SET `Location` = location_param
+    WHERE `id` = id_param;
+END //
+
+-- Procedure to update License no for an LX entry
+CREATE PROCEDURE UpdateLicenseNo_LX(
+    IN id_param INT,
+    IN license_no_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `lx`
+    SET `License no` = license_no_param
+    WHERE `id` = id_param;
+END //
+
+-- Procedure to update Sequence no for an LX entry
+CREATE PROCEDURE UpdateSequenceNo_LX(
+    IN id_param INT,
+    IN sequence_no_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `lx`
+    SET `Sequence no` = sequence_no_param
+    WHERE `id` = id_param;
+END //
+
+-- Procedure to update Expiry for an LX entry
+CREATE PROCEDURE UpdateExpiry_LX(
+    IN id_param INT,
+    IN expiry_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `lx`
+    SET `Expiry` = expiry_param
+    WHERE `id` = id_param;
+END //
+
+-- Procedure to update Purposes for an LX entry
+CREATE PROCEDURE UpdatePurposes_LX(
+    IN id_param INT,
+    IN purposes_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `lx`
+    SET `Purposes` = purposes_param
+    WHERE `id` = id_param;
+END //
+
+-- Procedure to update RSS for an LX entry
+CREATE PROCEDURE UpdateRSS_LX(
+    IN id_param INT,
+    IN rss_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `lx`
+    SET `RSS` = rss_param
+    WHERE `id` = id_param;
+END //
+
+-- Procedure to update Comments for an LX entry
+CREATE PROCEDURE UpdateComments_LX(
+    IN id_param INT,
+    IN comments_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `lx`
+    SET `Comments` = comments_param
+    WHERE `id` = id_param;
+END //
+
+CREATE PROCEDURE UpdateEntireEntryLX (
+    IN id_param INT,
+    IN name_first_param VARCHAR(255),
+    IN name_last_param VARCHAR(255),
+    IN email_param VARCHAR(255),
+    IN phone_param VARCHAR(255),
+    IN location_param VARCHAR(255),
+    IN license_no_param VARCHAR(255),
+    IN sequence_no_param VARCHAR(255),
+    IN expiry_param VARCHAR(255),
+    IN purposes_param VARCHAR(255),
+    IN rss_param VARCHAR(255),
+    IN comments_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `lx`
+    SET 
+        `Name (first)` = name_first_param,
+        `Name (last)` = name_last_param,
+        `Email` = email_param,
+        `Phone` = phone_param,
+        `Location` = location_param,
+        `License no` = license_no_param,
+        `Sequence no` = sequence_no_param,
+        `Expiry` = expiry_param,
+        `Purposes` = purposes_param,
+        `RSS` = rss_param,
+        `Comments` = comments_param
+    WHERE `id` = id_param;
+END //
+
+--Move to Archive
+
+CREATE PROCEDURE `MoveFromLXArchive`(
+    IN id_param INT
+)
+BEGIN
+    DECLARE new_id INT;
+
+    -- Get the maximum id from the LX table
+    SELECT MAX(`id`) INTO new_id FROM `lx`;
+
+    -- Check if the maximum id is NULL (i.e., if the LX table is empty)
+    IF new_id IS NULL THEN
+        SET new_id = 0;
+    END IF;
+
+    -- Increment new_id by 1 to get the new id for the moved entry
+    SET new_id = new_id + 1;
+
+    -- Insert the entry into the LX table with the new id
+    INSERT INTO `lx` (`id`, `Name (first)`, `Name (last)`, `Email`, `Phone`, `Location`, `License no`, `Sequence no`, `Expiry`, `Purposes`, `RSS`, `Comments`)
+    SELECT new_id, `Name (first)`, `Name (last)`, `Email`, `Phone`, `Location`, `License no`, `Sequence no`, `Expiry`, `Purposes`, `RSS`, `Comments`
+    FROM `lx_archive`
+    WHERE `id` = id_param;
+
+    -- Delete the entry from the LX Archive table
+    DELETE FROM `lx_archive`
+    WHERE `id` = id_param;
+
+    -- Reorder the IDs in the LX table to ensure sequential IDs
+    SET @counter := 0;
+    UPDATE `lx` SET `id` = @counter := @counter + 1;
+END //
+
+
+
+--Move From Archive
+CREATE PROCEDURE `MoveToLXArchive`(
+    IN id_param INT
+)
+BEGIN
+    -- Declare variables
+    DECLARE max_id INT;
+
+    -- Get the maximum id from the LX Archive table
+    SELECT MAX(`id`) INTO max_id FROM `lx_archive`;
+
+    -- Check if the maximum id is NULL (i.e., if the LX Archive table is empty)
+    IF max_id IS NULL THEN
+        SET max_id = 0;
+    END IF;
+
+    -- Insert the entry into the LX Archive table with the incremented id
+    INSERT INTO `lx_archive` (`id`, `Name (first)`, `Name (last)`, `Email`, `Phone`, `Location`, `License no`, `Sequence no`, `Expiry`, `Purposes`, `RSS`, `Comments`)
+    SELECT max_id + 1, `Name (first)`, `Name (last)`, `Email`, `Phone`, `Location`, `License no`, `Sequence no`, `Expiry`, `Purposes`, `RSS`, `Comments`
+    FROM `lx`
+    WHERE `id` = id_param;
+
+    -- Delete the entry from the LX table
+    DELETE FROM `lx`
+    WHERE `id` = id_param;
+
+    -- Reorder the IDs in the LX table to ensure sequential IDs
+    SET @counter = 0;
+    UPDATE `lx` SET `id` = (@counter := @counter + 1) WHERE `id` > 0;
+END //
+
+DELIMITER ;
+

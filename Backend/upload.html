@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table Upload</title>
+</head>
+<body>
+    <h2>Upload a File to a Table</h2>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="file" id="fileInput">
+        <input type="text" name="tablename" id="tablenameInput" placeholder="Enter table name">
+        <button type="submit">Upload</button>
+    </form>
+    <p id="message"></p>
+
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var formData = new FormData();
+            var fileInput = document.getElementById('fileInput');
+            var tablenameInput = document.getElementById('tablenameInput');
+            formData.append('file', fileInput.files[0]);
+            formData.append('tablename', tablenameInput.value.trim());
+
+            fetch('http://localhost:8070/upload', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Upload failed.');
+                }
+                return response.text();
+            })
+            .then(data => {
+                document.getElementById('message').textContent = data;
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('message').textContent = 'Error uploading file.';
+            });
+        });
+    </script>
+</body>
+</html>

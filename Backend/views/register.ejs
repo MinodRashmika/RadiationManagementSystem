@@ -1,0 +1,42 @@
+<% // This is a reference https://www.youtube.com/watch?v=-RCnNyD0L-s %>
+<h1>REGISTER FOR THE APP</h1>
+<form action="/register" method="POST" onsubmit="return verifyPass()">
+<div>
+    <label for="name">Enter your name:</label>
+    <input type="text" id="name" name="name"
+    required>
+</div>
+<div>
+    <label for="email:">Enter your email ID:</label>
+    <input type="email" id="email:" name="email"
+    required>
+</div>
+<div>
+    <label for="password:">Enter your password:</label>
+    <input type="password" id="password:" name="password"
+    required>
+</div>
+<div>
+    <label for="role">Choose your role:</label>
+    <select id="role" name="role" required>
+        <option value="Radiation Safety Officer role">Radiation Safety Officer role</option>
+        <option value="Radiation Safety Supervisor role">Radiation Safety Supervisor role</option>
+        <option value="Licensee role ">Licensee role </option>
+        <option value="Nobody User role">Nobody User role</option>
+    </select>
+</div>
+    <button type="submit">Click Here To Register</button>
+</form>
+<script>
+    function verifyPass() {
+      var pass = document.getElementById('password').value; // https://chat.openai.com/
+      if (pass.length < 5) {
+        alert('password must be 5 character or more');
+        return false;
+      }
+      return true;
+    }
+    </script>
+<a href="/login">Click here to login</a>
+
+

@@ -1,0 +1,388 @@
+CREATE PROCEDURE AddRSEntry (
+    IN isotope_param VARCHAR(255),
+    IN quantity_param VARCHAR(255),
+    IN form_param VARCHAR(255),
+    IN purpose_param VARCHAR(255),
+    IN manufacturer_param VARCHAR(255),
+    IN model_param VARCHAR(255),
+    IN serial_no_param VARCHAR(255),
+    IN location_param VARCHAR(255),
+    IN rss_param VARCHAR(255),
+    IN custodian_param VARCHAR(255),
+    IN last_seen_param VARCHAR(255),
+    IN rc_notified_param VARCHAR(255),
+    IN comments_param VARCHAR(255)
+)
+BEGIN
+    INSERT INTO `rs` (
+        `Isotope`, `Quantity`, `Form`, `Purpose`, `Manufacturer`, `Model`,
+        `Serial no`, `Location`, `RSS`, `Custodian`, `Last_Seen`, `RC_Notified`, `Comments`
+    ) VALUES (
+        isotope_param, quantity_param, form_param, purpose_param, manufacturer_param, model_param,
+        serial_no_param, location_param, rss_param, custodian_param, last_seen_param, rc_notified_param, comments_param
+    );
+ END
+
+
+
+
+
+CREATE PROCEDURE SortByLastSeen_RS()
+BEGIN
+    SELECT *
+    FROM rs
+    ORDER BY STR_TO_DATE(`Last_Seen`, '%d/%m/%Y') DESC;
+ END
+
+
+CREATE PROCEDURE SortByRCNotified_RS()
+BEGIN
+    SELECT *
+    FROM rs
+    ORDER BY `RC_Notified`;
+ END
+
+
+CREATE PROCEDURE SortByIsotope_RS()
+BEGIN
+    SELECT *
+    FROM rs
+    ORDER BY `Isotope`;
+ END
+
+
+CREATE PROCEDURE SortByQuantity_RS()
+BEGIN
+    SELECT *
+    FROM rs
+    ORDER BY `Quantity`;
+ END
+
+
+CREATE PROCEDURE SortByForm_RS()
+BEGIN
+    SELECT *
+    FROM rs
+    ORDER BY `Form`;
+ END
+
+
+CREATE PROCEDURE SortByForm_Purpose()
+BEGIN
+    SELECT * 
+    FROM rs 
+    ORDER BY `Purpose`;
+ END
+
+
+
+CREATE PROCEDURE SortByManufacturer_RS()
+BEGIN
+    SELECT *
+    FROM rs
+    ORDER BY `Manufacturer`;
+ END
+
+
+CREATE PROCEDURE SortByModel_RS()
+BEGIN
+    SELECT *
+    FROM rs
+    ORDER BY `Model`;
+ END
+
+
+CREATE PROCEDURE SortBySerialNo_RS()
+BEGIN
+    SELECT *
+    FROM rs
+    ORDER BY `Serial no`;
+ END
+
+
+CREATE PROCEDURE SortByLocation_RS()
+BEGIN
+    SELECT *
+    FROM rs
+    ORDER BY `Location`;
+ END
+
+
+CREATE PROCEDURE SortByCustodian_RS()
+BEGIN
+    SELECT *
+    FROM rs
+    ORDER BY `Custodian`;
+ END
+
+
+CREATE PROCEDURE SortByComments_RS()
+BEGIN
+    SELECT *
+    FROM rs
+    ORDER BY `Comments`;
+ END
+
+
+CREATE PROCEDURE SortByRSS_RS()
+BEGIN
+    SELECT *
+    FROM rs
+    ORDER BY `RSS`;
+ END
+
+
+
+CREATE PROCEDURE UpdateIsotope_RS(
+    IN old_isotope VARCHAR(255),
+    IN new_isotope VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `Isotope` = new_isotope
+    WHERE `Isotope` = old_isotope;
+ END
+
+
+CREATE PROCEDURE UpdateQuantity_RS(
+    IN old_quantity VARCHAR(255),
+    IN new_quantity VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `Quantity` = new_quantity
+    WHERE `Quantity` = old_quantity;
+ END
+
+
+CREATE PROCEDURE UpdateForm_RS(
+    IN old_form VARCHAR(255),
+    IN new_form VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `Form` = new_form
+    WHERE `Form` = old_form;
+ END
+
+
+CREATE PROCEDURE UpdatePurpose_RS(
+    IN old_purpose VARCHAR(255),
+    IN new_purpose VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `Purpose` = new_purpose
+    WHERE `Purpose` = old_purpose;
+ END
+
+
+CREATE PROCEDURE UpdateManufacturer_RS(
+    IN old_manufacturer VARCHAR(255),
+    IN new_manufacturer VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `Manufacturer` = new_manufacturer
+    WHERE `Manufacturer` = old_manufacturer;
+ END
+
+
+CREATE PROCEDURE UpdateModel_RS(
+    IN old_model VARCHAR(255),
+    IN new_model VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `Model` = new_model
+    WHERE `Model` = old_model;
+ END
+
+
+CREATE PROCEDURE UpdateSerialNo_RS(
+    IN old_serial_no VARCHAR(255),
+    IN new_serial_no VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `Serial no` = new_serial_no
+    WHERE `Serial no` = old_serial_no;
+ END
+
+
+CREATE PROCEDURE UpdateLocation_RS(
+    IN old_location VARCHAR(255),
+    IN new_location VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `Location` = new_location
+    WHERE `Location` = old_location;
+ END
+
+
+CREATE PROCEDURE UpdateRSS_RS(
+    IN old_rss VARCHAR(255),
+    IN new_rss VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `RSS` = new_rss
+    WHERE `RSS` = old_rss;
+ END
+
+
+CREATE PROCEDURE UpdateCustodian_RS(
+    IN old_custodian VARCHAR(255),
+    IN new_custodian VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `Custodian` = new_custodian
+    WHERE `Custodian` = old_custodian;
+ END
+
+
+CREATE PROCEDURE UpdateLastSeen_RS(
+    IN old_last_seen VARCHAR(255),
+    IN new_last_seen VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `Last Seen` = new_last_seen
+    WHERE `Last Seen` = old_last_seen;
+ END
+
+
+CREATE PROCEDURE UpdateRCNotified_RS(
+    IN old_rc_notified VARCHAR(255),
+    IN new_rc_notified VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `RC Notified` = new_rc_notified
+    WHERE `RC Notified` = old_rc_notified;
+ END
+
+
+CREATE PROCEDURE UpdateComments_RS(
+    IN old_comments VARCHAR(255),
+    IN new_comments VARCHAR(255)
+)
+BEGIN
+    UPDATE RS
+    SET `Comments` = new_comments
+    WHERE `Comments` = old_comments;
+ END
+
+
+CREATE PROCEDURE UpdateEntireEntryRS (
+    IN id_param INT,
+    IN isotope_param VARCHAR(255),
+    IN quantity_param VARCHAR(255),
+    IN form_param VARCHAR(255),
+    IN purpose_param VARCHAR(255),
+    IN manufacturer_param VARCHAR(255),
+    IN model_param VARCHAR(255),
+    IN serial_no_param VARCHAR(255),
+    IN location_param VARCHAR(255),
+    IN rss_param VARCHAR(255),
+    IN custodian_param VARCHAR(255),
+    IN last_seen_param VARCHAR(255),
+    IN rc_notified_param VARCHAR(255),
+    IN comments_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `rs`
+    SET 
+        `Isotope` = isotope_param,
+        `Quantity` = quantity_param,
+        `Form` = form_param,
+        `Purpose` = purpose_param,
+        `Manufacturer` = manufacturer_param,
+        `Model` = model_param,
+        `Serial no` = serial_no_param,
+        `Location` = location_param,
+        `RSS` = rss_param,
+        `Custodian` = custodian_param,
+        `Last_Seen` = last_seen_param,
+        `RC_Notified` = rc_notified_param,
+        `Comments` = comments_param
+    WHERE `id` = id_param;
+ END
+
+
+
+CREATE PROCEDURE MoveToRSArchive(
+    IN id_param INT
+)
+BEGIN
+    DECLARE isotope_var VARCHAR(255);
+    DECLARE quantity_var VARCHAR(255);
+    DECLARE form_var VARCHAR(255);
+    DECLARE purpose_var VARCHAR(255);
+    DECLARE manufacturer_var VARCHAR(255);
+    DECLARE model_var VARCHAR(255);
+    DECLARE serial_no_var VARCHAR(255);
+    DECLARE location_var VARCHAR(255);
+    DECLARE rss_var VARCHAR(255);
+    DECLARE custodian_var VARCHAR(255);
+    DECLARE last_seen_var VARCHAR(255);
+    DECLARE rc_notified_var VARCHAR(255);
+    DECLARE comments_var VARCHAR(255);
+    
+    
+    SELECT `Isotope`, `Quantity`, `Form`, `Purpose`, `Manufacturer`, `Model`, `Serial no`, `Location`, `RSS`, `Custodian`, `Last_Seen`, `RC_Notified`, `Comments`
+    INTO isotope_var, quantity_var, form_var, purpose_var, manufacturer_var, model_var, serial_no_var, location_var, rss_var, custodian_var, last_seen_var, rc_notified_var, comments_var
+    FROM `rs`
+    WHERE `id` = id_param;
+
+    
+    INSERT INTO `rs_archive` (`Isotope`, `Quantity`, `Form`, `Purpose`, `Manufacturer`, `Model`, `Serial no`, `Location`, `RSS`, `Custodian`, `Last_Seen`, `RC_Notified`, `Comments`)
+    VALUES (isotope_var, quantity_var, form_var, purpose_var, manufacturer_var, model_var, serial_no_var, location_var, rss_var, custodian_var, last_seen_var, rc_notified_var, comments_var);
+    
+    
+    DELETE FROM `rs`
+    WHERE `id` = id_param;
+ END
+
+
+
+
+
+
+CREATE PROCEDURE `MoveFromRSArchive`(
+    IN id_param INT
+)
+BEGIN
+
+    DECLARE new_id INT;
+
+
+    SET new_id = (SELECT COALESCE(MAX(`id`), 0) FROM `rs`);
+
+
+    IF new_id IS NULL THEN
+        SET new_id = 0;
+    END IF;
+
+
+    SET new_id = new_id + 1;
+
+
+    INSERT INTO `rs` (`id`, `Isotope`, `Quantity`, `Form`, `Purpose`, `Manufacturer`, `Model`, `Serial no`, `Location`, `RSS`, `Custodian`, `Last_Seen`, `RC_Notified`, `Comments`)
+    SELECT new_id, `Isotope`, `Quantity`, `Form`, `Purpose`, `Manufacturer`, `Model`, `Serial no`, `Location`, `RSS`, `Custodian`, `Last_Seen`, `RC_Notified`, `Comments`
+    FROM `rs_archive`
+    WHERE `id` = id_param;
+
+
+    DELETE FROM `rs_archive`
+    WHERE `id` = id_param;
+    
+
+    SET @counter := 0;
+    UPDATE `rs` SET `id` = @counter := @counter + 1;
+ END
+
+ 
+

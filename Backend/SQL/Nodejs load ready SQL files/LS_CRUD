@@ -1,0 +1,321 @@
+CREATE PROCEDURE AddLSEntry (
+    IN first_name_param VARCHAR(255),
+    IN last_name_param VARCHAR(255),
+    IN email_param VARCHAR(255),
+    IN phone_param VARCHAR(255),
+    IN location_param VARCHAR(255),
+    IN license_no_param VARCHAR(255),
+    IN sequence_no_param VARCHAR(255),
+    IN expiry_param VARCHAR(255),
+    IN purposes_param VARCHAR(255),
+    IN rss_param VARCHAR(255),
+    IN comments_param VARCHAR(255)
+)
+BEGIN
+    INSERT INTO `ls` (
+        `Name (first)`, `Name (last)`, `Email`, `Phone`, `Location`, `License no`,
+        `Sequence no`, `Expiry`, `Purposes`, `RSS`, `Comments`
+    ) VALUES (
+        first_name_param, last_name_param, email_param, phone_param, location_param,
+        license_no_param, sequence_no_param, expiry_param, purposes_param, rss_param, comments_param
+    );
+ END
+
+
+CREATE PROCEDURE SortByNameFirst_LS()
+BEGIN
+    SELECT *
+    FROM LS
+    ORDER BY `Name (first)`;
+ END
+
+CREATE PROCEDURE SortByNameLast_LS()
+BEGIN
+    SELECT *
+    FROM LS
+    ORDER BY `Name (last)`;
+ END
+
+CREATE PROCEDURE SortByEmail_LS()
+BEGIN
+    SELECT *
+    FROM LS
+    ORDER BY `Email`;
+ END
+
+CREATE PROCEDURE SortByPhone_LS()
+BEGIN
+    SELECT *
+    FROM LS
+    ORDER BY `Phone`;
+ END
+
+CREATE PROCEDURE SortByLocation_LS()
+BEGIN
+    SELECT *
+    FROM LS
+    ORDER BY `Location`;
+ END
+
+CREATE PROCEDURE SortByLicenseNo_LS()
+BEGIN
+    SELECT *
+    FROM LS
+    ORDER BY `License no`;
+ END
+
+CREATE PROCEDURE SortBySequenceNo_LS()
+BEGIN
+    SELECT *
+    FROM LS
+    ORDER BY `Sequence no`;
+ END
+
+CREATE PROCEDURE SortByExpiry_LS()
+BEGIN
+    SELECT *
+    FROM LS
+    ORDER BY STR_TO_DATE(`Expiry`, '%d/%m/%Y') DESC;
+ END
+
+CREATE PROCEDURE SortByPurposes_LS()
+BEGIN
+    SELECT *
+    FROM LS
+    ORDER BY `Purposes`;
+ END
+
+CREATE PROCEDURE SortByRSS_LS()
+BEGIN
+    SELECT *
+    FROM LS
+    ORDER BY `RSS`;
+ END
+
+CREATE PROCEDURE SortByComments_LS()
+BEGIN
+    SELECT *
+    FROM LS
+    ORDER BY `Comments`;
+ END
+
+
+CREATE PROCEDURE UpdateFirstName_LS(
+    IN id_param INT,
+    IN first_name_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `ls`
+    SET `Name (first)` = first_name_param
+    WHERE `id` = id_param;
+ END
+
+CREATE PROCEDURE UpdateLastName_LS(
+    IN id_param INT,
+    IN last_name_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `ls`
+    SET `Name (last)` = last_name_param
+    WHERE `id` = id_param;
+ END
+
+
+CREATE PROCEDURE UpdateEmail_LS(
+    IN id_param INT,
+    IN email_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `ls`
+    SET `Email` = email_param
+    WHERE `id` = id_param;
+ END
+
+
+CREATE PROCEDURE UpdatePhone_LS(
+    IN id_param INT,
+    IN phone_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `ls`
+    SET `Phone` = phone_param
+    WHERE `id` = id_param;
+ END
+
+CREATE PROCEDURE UpdateLocation_LS(
+    IN id_param INT,
+    IN location_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `ls`
+    SET `Location` = location_param
+    WHERE `id` = id_param;
+ END
+
+
+CREATE PROCEDURE UpdateLicenseNo_LS(
+    IN id_param INT,
+    IN license_no_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `ls`
+    SET `License no` = license_no_param
+    WHERE `id` = id_param;
+ END
+
+
+CREATE PROCEDURE UpdateSequenceNo_LS(
+    IN id_param INT,
+    IN sequence_no_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `ls`
+    SET `Sequence no` = sequence_no_param
+    WHERE `id` = id_param;
+ END
+
+
+CREATE PROCEDURE UpdateExpiry_LS(
+    IN id_param INT,
+    IN expiry_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `ls`
+    SET `Expiry` = expiry_param
+    WHERE `id` = id_param;
+ END
+
+
+CREATE PROCEDURE UpdatePurposes_LS(
+    IN id_param INT,
+    IN purposes_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `ls`
+    SET `Purposes` = purposes_param
+    WHERE `id` = id_param;
+ END
+
+
+CREATE PROCEDURE UpdateRSS_LS(
+    IN id_param INT,
+    IN rss_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `ls`
+    SET `RSS` = rss_param
+    WHERE `id` = id_param;
+ END
+
+
+CREATE PROCEDURE UpdateComments_LS(
+    IN id_param INT,
+    IN comments_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `ls`
+    SET `Comments` = comments_param
+    WHERE `id` = id_param;
+ END
+
+CREATE PROCEDURE UpdateEntireEntry_LS(
+    IN id_param INT,
+    IN first_name_param VARCHAR(255),
+    IN last_name_param VARCHAR(255),
+    IN email_param VARCHAR(255),
+    IN phone_param VARCHAR(255),
+    IN location_param VARCHAR(255),
+    IN license_no_param VARCHAR(255),
+    IN sequence_no_param VARCHAR(255),
+    IN expiry_param VARCHAR(255),
+    IN purposes_param VARCHAR(255),
+    IN rss_param VARCHAR(255),
+    IN comments_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `ls`
+    SET
+        `Name (first)` = first_name_param,
+        `Name (last)` = last_name_param,
+        `Email` = email_param,
+        `Phone` = phone_param,
+        `Location` = location_param,
+        `License no` = license_no_param,
+        `Sequence no` = sequence_no_param,
+        `Expiry` = expiry_param,
+        `Purposes` = purposes_param,
+        `RSS` = rss_param,
+        `Comments` = comments_param
+    WHERE `id` = id_param;
+ END
+
+
+ 
+
+
+CREATE PROCEDURE `MoveToLSArchive`(
+    IN id_param INT
+)
+BEGIN
+
+    DECLARE max_id INT;
+
+
+    SELECT MAX(`id`) INTO max_id FROM `ls_archive`;
+
+
+    IF max_id IS NULL THEN
+        SET max_id = 0;
+    END IF;
+
+
+    INSERT INTO `ls_archive` (`id`, `Name (first)`, `Name (last)`, `Email`, `Phone`, `Location`, `License no`, `Sequence no`, `Expiry`, `Purposes`, `RSS`, `Comments`)
+    SELECT max_id + 1, `Name (first)`, `Name (last)`, `Email`, `Phone`, `Location`, `License no`, `Sequence no`, `Expiry`, `Purposes`, `RSS`, `Comments`
+    FROM `ls`
+    WHERE `id` = id_param;
+
+
+    DELETE FROM `ls`
+    WHERE `id` = id_param;
+
+
+    SET @counter = 0;
+    UPDATE `ls` SET `id` = (@counter := @counter + 1) WHERE `id` > 0;
+ END
+
+
+CREATE PROCEDURE `MoveFromLSArchive`(
+    IN id_param INT
+)
+BEGIN
+
+    DECLARE new_id INT;
+
+
+    SELECT MAX(`id`) INTO new_id FROM `ls`;
+
+
+    IF new_id IS NULL THEN
+        SET new_id = 0;
+    END IF;
+
+
+    SET new_id = new_id + 1;
+
+
+    INSERT INTO `ls` (`id`, `Name (first)`, `Name (last)`, `Email`, `Phone`, `Location`, `License no`, `Sequence no`, `Expiry`, `Purposes`, `RSS`, `Comments`)
+    SELECT new_id, `Name (first)`, `Name (last)`, `Email`, `Phone`, `Location`, `License no`, `Sequence no`, `Expiry`, `Purposes`, `RSS`, `Comments`
+    FROM `ls_archive`
+    WHERE `id` = id_param;
+
+
+    DELETE FROM `ls_archive`
+    WHERE `id` = id_param;
+
+
+    SET @counter = 0;
+    UPDATE `ls_archive` SET `id` = (@counter := @counter + 1) WHERE `id` > 0;
+ END
+
+ 
+

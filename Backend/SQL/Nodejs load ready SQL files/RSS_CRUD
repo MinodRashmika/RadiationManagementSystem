@@ -1,0 +1,225 @@
+CREATE PROCEDURE AddRSSEntry (
+    IN name_param VARCHAR(255),
+    IN email_param VARCHAR(255),
+    IN phone_param VARCHAR(255),
+    IN location_param VARCHAR(255),
+    IN school_param VARCHAR(255),
+    IN head_of_school_param VARCHAR(255),
+    IN purposes_param VARCHAR(255)
+)
+BEGIN
+    INSERT INTO `rss` (`Name`, `Email`, `Phone`, `Location`, `School`, `Head of School`, `Purposes`)
+    VALUES (name_param, email_param, phone_param, location_param, school_param, head_of_school_param, purposes_param);
+END
+
+
+
+CREATE PROCEDURE SortByName_RSS()
+BEGIN
+    SELECT *
+    FROM `RSS`
+    ORDER BY `Name`;
+END
+
+
+CREATE PROCEDURE SortByEmail_RSS()
+BEGIN
+    SELECT *
+    FROM `RSS`
+    ORDER BY `Email`;
+END
+
+
+CREATE PROCEDURE SortByPhone_RSS()
+BEGIN
+    SELECT *
+    FROM `RSS`
+    ORDER BY `Phone`;
+END
+
+CREATE PROCEDURE SortByLocation_RSS()
+BEGIN
+    SELECT *
+    FROM `RSS`
+    ORDER BY `Location`;
+END
+
+
+CREATE PROCEDURE SortBySchool_RSS()
+BEGIN
+    SELECT *
+    FROM `RSS`
+    ORDER BY `School`;
+END
+
+
+CREATE PROCEDURE SortByHeadOfSchool_RSS()
+BEGIN
+    SELECT *
+    FROM `RSS`
+    ORDER BY `Head of School`;
+END
+
+
+CREATE PROCEDURE SortByPurposes_RSS()
+BEGIN
+    SELECT *
+    FROM `RSS`
+    ORDER BY `Purposes`;
+END
+
+
+CREATE PROCEDURE UpdateRSSName(
+    IN id_param INT,
+    IN name_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `rss` SET `Name` = name_param WHERE `id` = id_param;
+END
+
+
+CREATE PROCEDURE UpdateRSSEmail(
+    IN id_param INT,
+    IN email_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `rss` SET `Email` = email_param WHERE `id` = id_param;
+END
+
+
+CREATE PROCEDURE UpdateRSSPhone(
+    IN id_param INT,
+    IN phone_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `rss` SET `Phone` = phone_param WHERE `id` = id_param;
+END
+
+
+CREATE PROCEDURE UpdateRSSLocation(
+    IN id_param INT,
+    IN location_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `rss` SET `Location` = location_param WHERE `id` = id_param;
+END
+
+
+CREATE PROCEDURE UpdateRSSSchool(
+    IN id_param INT,
+    IN school_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `rss` SET `School` = school_param WHERE `id` = id_param;
+END
+
+
+CREATE PROCEDURE UpdateRSSHeadOfSchool(
+    IN id_param INT,
+    IN head_of_school_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `rss` SET `Head of School` = head_of_school_param WHERE `id` = id_param;
+END
+
+
+CREATE PROCEDURE UpdateRSSPurposes(
+    IN id_param INT,
+    IN purposes_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `rss` SET `Purposes` = purposes_param WHERE `id` = id_param;
+END
+
+
+
+
+CREATE PROCEDURE UpdateRSSEntry(
+    IN id_param INT,
+    IN name_param VARCHAR(255),
+    IN email_param VARCHAR(255),
+    IN phone_param VARCHAR(255),
+    IN location_param VARCHAR(255),
+    IN school_param VARCHAR(255),
+    IN head_of_school_param VARCHAR(255),
+    IN purposes_param VARCHAR(255)
+)
+BEGIN
+    UPDATE `rss`
+    SET
+        `Name` = name_param,
+        `Email` = email_param,
+        `Phone` = phone_param,
+        `Location` = location_param,
+        `School` = school_param,
+        `Head of School` = head_of_school_param,
+        `Purposes` = purposes_param
+    WHERE `id` = id_param;
+END
+
+
+CREATE PROCEDURE MoveToRSSArchive(
+    IN id_param INT
+)
+BEGIN
+
+    DECLARE name_var VARCHAR(255);
+    DECLARE email_var VARCHAR(255);
+    DECLARE phone_var VARCHAR(255);
+    DECLARE location_var VARCHAR(255);
+    DECLARE school_var VARCHAR(255);
+    DECLARE head_of_school_var VARCHAR(255);
+    DECLARE purposes_var VARCHAR(255);
+    
+
+    SELECT `Name`, `Email`, `Phone`, `Location`, `School`, `Head of School`, `Purposes`
+    INTO name_var, email_var, phone_var, location_var, school_var, head_of_school_var, purposes_var
+    FROM `rss`
+    WHERE `id` = id_param;
+
+
+    INSERT INTO `rss_archive` (`Name`, `Email`, `Phone`, `Location`, `School`, `Head of School`, `Purposes`)
+    VALUES (name_var, email_var, phone_var, location_var, school_var, head_of_school_var, purposes_var);
+    
+
+    DELETE FROM `rss`
+    WHERE `id` = id_param;
+END
+
+
+
+
+
+
+CREATE PROCEDURE MoveFromRSSArchive(
+    IN id_param INT
+)
+BEGIN
+ 
+    DECLARE new_id INT;
+
+
+    SET new_id = (SELECT COALESCE(MAX(`id`), 0) FROM `rss`);
+
+
+    IF new_id IS NULL THEN
+        SET new_id = 0;
+    END IF;
+
+
+    SET new_id = new_id + 1;
+
+
+    INSERT INTO `rss` (`id`, `Name`, `Email`, `Phone`, `Location`, `School`, `Head of School`, `Purposes`)
+    SELECT new_id, `Name`, `Email`, `Phone`, `Location`, `School`, `Head of School`, `Purposes`
+    FROM `rss_archive`
+    WHERE `id` = id_param;
+
+
+    DELETE FROM `rss_archive`
+    WHERE `id` = id_param;
+
+
+    SET @counter := 0;
+    UPDATE `rss` SET `id` = @counter := @counter + 1 WHERE `id` > 0;
+END
