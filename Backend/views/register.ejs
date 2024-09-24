@@ -1,6 +1,6 @@
 <% // This is a reference https://www.youtube.com/watch?v=-RCnNyD0L-s %>
 <h1>REGISTER FOR THE APP</h1>
-<form action="/register" method="POST" onsubmit="return verifyPass()">
+<form action="/register" method="POST">
 <div>
     <label for="name">Enter your name:</label>
     <input type="text" id="name" name="name"
@@ -27,16 +27,6 @@
 </div>
     <button type="submit">Click Here To Register</button>
 </form>
-<script>
-    function verifyPass() {
-      var pass = document.getElementById('password').value; // https://chat.openai.com/
-      if (pass.length < 5) {
-        alert('password must be 5 character or more');
-        return false;
-      }
-      return true;
-    }
-    </script>
 <a href="/login">Click here to login</a>
 
 

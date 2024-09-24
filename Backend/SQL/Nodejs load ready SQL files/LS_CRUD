@@ -12,7 +12,7 @@ CREATE PROCEDURE AddLSEntry (
     IN comments_param VARCHAR(255)
 )
 BEGIN
-    INSERT INTO `ls` (
+    INSERT INTO `LS` (
         `Name (first)`, `Name (last)`, `Email`, `Phone`, `Location`, `License no`,
         `Sequence no`, `Expiry`, `Purposes`, `RSS`, `Comments`
     ) VALUES (

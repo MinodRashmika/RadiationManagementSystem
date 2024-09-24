@@ -1,3 +1,4 @@
+// EditNav.js
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 
@@ -12,9 +13,9 @@ const EditNav = () => {
             <NavLink
               to="/AddUser"
               activeClassName="active"
-              className={`px-32 py-4 sqaured text-lg transition duration-300 ${
-                location.pathname === '/AddUser' ? 'bg-gray-200 text-black' : 'bg-gray-700 text-white'
-              } hover:bg-gray-500 hover:text-white`}
+              className={`px-32 py-4 sqaured text-lg ${
+                location.pathname === '/add' ? 'bg-gray-200 text-black' : 'bg-gray-700 text-white'
+              }`}
             >
               Add Data
             </NavLink>
@@ -23,9 +24,9 @@ const EditNav = () => {
             <NavLink
               to="/UpdateUser"
               activeClassName="active"
-              className={`px-32 py-4 sqaured text-lg transition duration-300 ${
-                location.pathname === '/UpdateUser' ? 'bg-gray-200 text-black' : 'bg-gray-700 text-white'
-              } hover:bg-gray-500 hover:text-white`}
+              className={`px-32 py-4 sqaured text-lg ${
+                location.pathname === '/update' ? 'bg-gray-200 text-black' : 'bg-gray-700 text-white'
+              }`}
             >
               Update Data
             </NavLink>
@@ -34,9 +35,9 @@ const EditNav = () => {
             <NavLink
               to="/DeleteUser"
               activeClassName="active"
-              className={`px-32 py-4 sqaured text-lg transition duration-300 ${
-                location.pathname === '/DeleteUser' ? 'bg-gray-200 text-black' : 'bg-gray-700 text-white'
-              } hover:bg-gray-500 hover:text-white`}
+              className={`px-32 py-4 sqaured text-lg ${
+                location.pathname === '/delete' ? 'bg-gray-200 text-black' : 'bg-gray-700 text-white'
+              }`}
             >
               Delete Data
             </NavLink>

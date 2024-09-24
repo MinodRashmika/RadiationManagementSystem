@@ -21,7 +21,7 @@ import { MySQL_query, DatabaseSetup, getTable , SortBy ,
   searchTable , addToTable , loadCSV, deleteFromTable, 
   restorefromTable, editRowTable, addData, updateData,
    deleteData, licence_checker} from './MySQL_Functions.js';
-import mysql from 'mysql2'
+import mysql from 'mysql'
 import readline from 'node:readline'
 import promptSync from 'prompt-sync';
 import bcrypt from 'bcrypt';
@@ -36,15 +36,7 @@ import {
 } from './passport-config.js';
 import otpGenerator from 'otp-generator';
 import mailer from 'nodemailer';
-//new file upload for docker
-import multer from 'multer';		//References https://chatgpt.com/,  https://expressjs.com/en/resources/middleware/multer.html
-import path from 'path';	
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-import fs from 'fs'; 
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
 
 const prompt = promptSync();
 //Express Set up
@@ -68,7 +60,7 @@ const storeOTP = new Map();
 //MySQL Database information
 const MySQL = mysql.createConnection({
 	host: "localhost",
-	user: "g26",
+	user: "root",
 	password: "student123", //<----------Make sure to change ", "password" and "database" if using local MySQL server
 });
 var databaseName = "capstone_2" // needs to be changed
@@ -193,53 +185,43 @@ app.get('/register', checkNotAuthenticated, (req, res) => {
 	res.render('register.ejs')
 })
 
-
-
-
+//hashing the password and adding the new user to the array
 app.post('/register', checkNotAuthenticated, async (req, res) => {
-    const password = req.body.password;
-	//password requirements
-    if (password == null || password.length == 0) {
-        return res.status(400).send("Please enter password");
-    }
-	//check for char pass length
-    if (password.length < 5) {
-        req.flash('error', 'Password must be 5 chars or more');
-        return res.status(400).json({ ok: false, message: 'Password must be 5 chars or more' });
-    }
-	//checks if rso is already in databse or not, if it doesnt exist then it adds it
-    const role = req.body.role;
-    try {
-        if (role === "Radiation Safety Officer role") {
-            const [results] = await MySQL.promise().query('SELECT COUNT(*) AS count FROM users WHERE role = ?', [role]);
+	const password = req.body.password;
 
-            if (results[0].count > 0) {
-                return res.status(400).json({ ok: false, message: `${role} is already registered` });
-            }
-        }
-        const hashedPassword = await bcrypt.hash(password, 10);
+	if(password == null || password.length == 0){
+		return res.status(400).send("Password getting empty")
+	}
 
-        const requestObj = {
-            name: req.body.name,
-            email: req.body.email,
-            password: hashedPassword,
-            role: req.body.role
-        };
-        MySQL.query('INSERT INTO users SET ?', requestObj, (error, results, fields) => {
-            if (error) {
-                console.error('Issue with inserting data: ' + error.message);
-                return res.status(500).json({ ok: false, message: 'Issue with inserting data' });
-            }
-            console.log('ID inserted in row:', results.insertId);
-            res.status(200).json({ ok: true, message: 'User registered successfully' });
-        });
+	if (password.length < 5) {
+		req.flash('error', 'Please enter a password that is 5 character or more');
+		return 	res.status(400).json({ ok: true, message: 'Password Length Must be > 5' });
 
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ ok: false, message: 'User registration failed' });
-    }
-});
+	}
+	//hashing passwords with use of bcrypt
+	try { 
+		const hashedPassword = await bcrypt.hash(req.body.password, 10)
 
+		const requestObj = {
+			name: req.body.name,
+			email: req.body.email,
+			password: hashedPassword,
+			role: req.body.role
+		}; // adding users into the data
+		MySQL.query('INSERT INTO users SET ?', requestObj, (error, results, fields) => {
+			if (error) {
+				console.error('Issue with inserting data: ' + error.message);
+				return;
+			}
+			console.log('id inserted in row:', results.insertId);
+		});
+		res.status(200).json({ ok: true, message: 'Added User' });
+	} catch (error) {
+		console.error('error!!:', error);
+		res.status(400).json({ ok: false, message: 'user not registered accordingly' });
+
+	}
+})
 
 app.post('/login', (req, res, next) => {
     passport.authenticate('local', (err, user, info) => {
@@ -250,7 +232,7 @@ app.post('/login', (req, res, next) => {
             return res.status(401).json({ error: info.message || 'Authentication failed' });
         }
         // Authentication successful, proceed to generate JWT token
-        const token = jwt.sign({ name: user.email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '2h' }); //cite : https://chat.openai.com/
+        const token = jwt.sign({ name: user.email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '2h' });
         res.cookie('token', token, { httpOnly: true });
         triggerOtpToUser(user.email);
         res.json({ token });
@@ -344,7 +326,7 @@ app.use(
 // Based on the roles certain tables & actions can be viewed & perfomred
 const rolePermissions = {
     "Radiation Safety Officer role": {
-        allowedTables: ['rs','RS','rs_archive', 'rx', 'RX', 'rx_archive', 'lx', 'LX', 'lx_archive', 'ls', 'LS', 'ls_archive', 'rss', 'RSS', 'rss_archive', 'users' ],
+        allowedTables: ['rs', 'rx', 'lx', 'ls', 'users'],
         allowedActions: ['add', 'edit', 'get', 'search', 'delete', 'restore']
     },
     "Radiation Safety Supervisor role": {
@@ -363,61 +345,19 @@ const rolePermissions = {
 
 // function checks for permission grated to each role & will display messages if accessing other
 function checkPermission(role, table, action) {
-    console.log(`Checking permission for role: ${role}, table: ${table}, action: ${action}`);
+	console.log("check permission" + role);
     const permissions = rolePermissions[role];
-    if (!permissions) {
-        console.log(`Role ${role} not found in rolePermissions`);
+    if (permissions.allowedTables.length == 0 && permissions.allowedActions.length == 0) {
         return "I'm sorry, I'm afraid I can't do that";
     }
-    if (action && !permissions.allowedActions.includes(action)) {
-        console.log(`Action ${action} not allowed for role ${role}`);
-        return "Please contact the RSO for further information action";
-    }
     if (!permissions.allowedTables.includes(table)) {
-        console.log(`Table ${table} not allowed for role ${role}`);
-        return "Please contact the RSO for further information table";
+        return "Please contact the RSO for further information";
+    }
+    if (action && !permissions.allowedActions.includes(action)) {
+        return "Please contact the RSO for further information";
     }
     return "Permission granted";
 }
-
-
-app.get('/tokentest', (req, res) => {
-	const requestToken = extractToken(req);
-    console.log("extract Token:", requestToken);
-
-    // Check if the Authorization header exists
-    if (!req.headers.authorization) {
-        return res.status(401).json({ message: "No authorization header found" });
-    }
-    
-    // Split the Authorization header to get the token
-    const authHeader = req.headers.authorization.split(' ');
-    
-    // Check if the token exists and if it's in the correct format
-    if (authHeader.length !== 2 || authHeader[0] !== 'Bearer') {
-        return res.status(401).json({ message: "Invalid authorization header format" });
-    }
-
-    // Extract the token
-    const token = authHeader[1];
-    
-    // Print token to the console
-    console.log("recieve Token:", token);
-	console.log(getUserIdFromToken(token));
-//	console.log(getUserRole(token));
-	const userRole = getUserRole(token);
-//	const fifthValue = userRole[4]; // Accessing the 5th element (index starts from 0)
-	console.log('this is role',userRole, 'this is end');
-
-	// Check permissions based on user role
-	//const permissions = checkPermission(fifthValue, 'rx', 'delete'); // Replace 'table_name' and 'action_name' with actual table and action
-
-    // Print permissions to the console
-   // console.log("Permissions:", permissions);
-
-    // Send a response
-    res.status(200).json({ message: "Token received and printed to console" });
-});
 
 
 function getUserIdFromToken(token) {
@@ -663,8 +603,6 @@ app.get('/table/:TableName', async (req, res) => {
 
 
 function extractToken(req) {
-	console.log("Data received:", req.headers); // Log the data being received
-
     const authHeader = req.headers['authorization'];
     if (!authHeader) { //if no auth header
         console.log("auth not found");
@@ -767,15 +705,6 @@ app.post('/addData',async (req ,res) =>{          //For tables that are not rx,r
   let {TableName,Data} = req.body
   try
   {
-	  const requestToken = extractToken(req);
-	if (!requestToken) {
-		return res.status(401).json({ message: "There is no token" });
-	}
-	const userRole = await getUserRole(requestToken);
-	const addResMessage = checkPermission(userRole, req.body.TableName, 'add');
-	if (addResMessage && addResMessage !== 'Permission granted') {
-		return res.status(401).json({ message: addResMessage });
-	}
     await addData(MySQL,TableName,Data,function(result){
       if (result.status == "404") {    //error checking
         res.status(404).json({message:"Unable to add data: "+Data+" to :"+TableName})
@@ -792,8 +721,6 @@ app.post('/addData',async (req ,res) =>{          //For tables that are not rx,r
 })
 
 app.delete('/delete',async(req ,res) =>{
-	console.log("Data received:", req.body); // Log the data being received
-
 	try {
         const requestToken = extractToken(req);
 	if (!requestToken) {
@@ -823,15 +750,6 @@ app.delete('/delete',async(req ,res) =>{
 app.delete('/deleteData', async (req ,res) =>{        //For tables that are not rx,rs,ls,lx
   try
   {
-	const requestToken = extractToken(req);
-	if (!requestToken) {
-		return res.status(401).json({ message: "There is no token" });
-	}
-	const userRole = await getUserRole(requestToken);
-	const addResMessage = checkPermission(userRole, req.body.TableName, 'delete');
-	if (addResMessage && addResMessage !== 'Permission granted') {
-		return res.status(401).json({ message: addResMessage });
-	}
     let {TableName,Data} = req.body
     var ArchiveTable = TableName+ "_archive"
     console.log("Data received:", req.body); // Log the data being received
@@ -937,29 +855,19 @@ app.put('/edit',async (req, res) => {
 })
 
 app.put('/editData', async (req ,res) =>{
+  let {TableName,Data,NewData} = req.body
+  try
+  {
+    await updateData(MySQL,TableName,Data,NewData, function(result) {
+      if (result.status == "404") {    //error checking
+        res.status(404).json({message:"Unable to edit data: "+Data+" to :"+TableName})
+      }else
+      {
+		console.log('Data updated successfully:', req.body); // Log the updated data
 
-	let {TableName,Data,NewData} = req.body
-	try
-	{
-		const requestToken = extractToken(req);
-		if (!requestToken) {
-			return res.status(401).json({ message: "There is no token" });
-		}
-		const userRole = await getUserRole(requestToken);
-		const addResMessage = checkPermission(userRole, req.body.TableName, 'edit');
-		if (addResMessage && addResMessage !== 'Permission granted') {
-			return res.status(401).json({ message: addResMessage });
-		}
-		await updateData(MySQL,TableName,Data,NewData, function(result) {
-		if (result.status == "404") {    //error checking
-			res.status(404).json({message:"Unable to edit data: "+Data+" to :"+TableName})
-		}else
-		{
-			console.log('Data updated successfully:', req.body); // Log the updated data
-
-			res.status(200).json(req.body)    //Sends table data to the user end as json and removes the "status" index from json
-		}
-		})
+        res.status(200).json(req.body)    //Sends table data to the user end as json and removes the "status" index from json
+      }
+    })
   }
   catch(error)
   {
@@ -972,53 +880,6 @@ app.listen(port, () => {
   console.log(`App running on port ${port}`)
 })
 
-const storage = multer.diskStorage({   //References https://chatgpt.com/
-    destination: function (req, file, cb) {
-        cb(null, './uploads/');			//Stores the uploaded file in the "/upload" folder
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname);	//Keeps the original files name
-    }
-});
-  
-const upload = multer({ 
-    storage: storage,
-    limits: { fileSize: 10 * 1024 * 1024 } // 10 MB limit
-});
-
-app.get('/upload', (req, res) => {
-    res.sendFile(path.join(__dirname, 'upload.html'));
-});
-// File upload endpoint
-app.post('/upload', upload.single('file'), async (req, res) => {	//References https://chatgpt.com/,  https://expressjs.com/en/resources/middleware/multer.html
-    console.log('Upload request received');
-
-    // Check if both file and tablename are provided
-    if (!req.file || !req.body.tablename) {
-        console.log('Missing file or tablename');
-        return res.status(400).send('Missing file or tablename.');
-    }
-
-    const absoluteFilePath = path.join(__dirname, 'uploads', req.file.filename);
-    console.log('Absolute file path:', absoluteFilePath);
-
-    // Assuming TableName and callback are defined somewhere
-    await loadCSV(MySQL, absoluteFilePath, req.body.tablename.toLowerCase(), function (result) {});
-
-    // Delete the file after loading
-    fs.unlink(absoluteFilePath, (err) => {
-        if (err) {
-            console.error('Error deleting file:', err);
-            return;
-        }
-        console.log('File deleted successfully');
-    });
-
-    res.send('File uploaded successfully.');
-});
-
-
-  
 
 //=============================================== Checks for LS and LX that are about to expire ===============================================
 var hours = 24         // CHANGEABLE
@@ -1042,4 +903,4 @@ catch
 }
 
 
-//export default app
+export default app

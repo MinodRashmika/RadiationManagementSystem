@@ -81,7 +81,7 @@ function UpdateUser() {
     }
   
     let editedUserData = {
-      TableName: 'users',
+      TableName: 'Users',
       Data: Object.entries(userData)
         .filter(([key, value]) => key.startsWith('id'))
         .map(([key, value]) => value.toString()),
@@ -160,9 +160,9 @@ function UpdateUser() {
               required
             >
               <option value="">Select Role</option>
-              <option value="Radiation Safety Officer role">Radiation Safety Officer</option>
-              <option value="Radiation Safety Supervisor role">Radiation Safety Supervisor</option>
-              <option value="Licensee role">Licensee</option>
+              <option value="Radiation Safety Officer">Radiation Safety Officer</option>
+              <option value="Radiation Safety Supervisor">Radiation Safety Supervisor</option>
+              <option value="Licensee">Licensee</option>
               <option value="Nobody User ">Nobody User </option>
             </select>
             {showError && roleError && <p className="text-sm text-red-500">{roleError}</p>}

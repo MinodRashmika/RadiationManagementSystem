@@ -50,7 +50,7 @@ function UserPage() {
 
     const deleteEntry = async () => {
         let Table_Id = {
-            "TableName": "users", // Change the TableName to "Users"
+            "TableName": "Users", // Change the TableName to "Users"
             "Data": Object.entries(data)
                 .filter(([key, value]) =>
                     key.startsWith("id"))
@@ -67,11 +67,11 @@ function UserPage() {
             await axios.delete(`http://localhost:8070/deletedata`, {
                 data: Table_Id,
                 headers: {
-                    Authorization: `Bearer ${token}`, // Include token in the Authorization header //cite chatgpt for how to include token in header
+                    Authorization: `Bearer ${token}`, // Include token in the Authorization header
                 },})
                 } catch (err) {
             alert(err.message);
-            return;
+            return; // Exit function early if deletion fails
         }
     
         // Deletion successful
@@ -128,6 +128,15 @@ function UserPage() {
                     </button>
                 </div>
             </div>
+            
+            {/* 
+            
+            2 circular buttons on the bottom left, one for edit and one for delete
+            
+            edit should take user to page similar to add, with the info already in placeholders
+            
+            delete should provide a modal to confirm deletion
+            */}
             <Footer />
         </div>
     )

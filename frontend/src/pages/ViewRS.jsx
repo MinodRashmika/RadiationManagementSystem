@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../App.css'
 import {Navbar, Footer, RsTable, TableData, TableHeader} from '../components/Index'
 
-function ViewRS () {
+const ViewAll = () => {
 
     const [RS, setRS] = useState([]);
 
@@ -34,8 +34,24 @@ function ViewRS () {
     return(
         <div>
             <Navbar/>
-            <div className='App-header m-auto overflow-x-auto'>
+            <div className='App-header'>
                 <RsTable
+                Headers={{
+                  H0: "ID",
+                  H1: "Isotope",
+                  H2: "Quantity",
+                  H3: "Form",
+                  H4: "Purpose",
+                  H5: "Manufacturer",
+                  H6: "Model",
+                  H7: "Serial No",
+                  H8: "Location",
+                  H9: "RSS",
+                  H10: "Custodian",
+                  H11: "Last Seen",
+                  H12: "RC Notified",
+                  H13: "Comments"
+                }}
                 Info={{
                   asset: RS
                 }}
@@ -51,4 +67,4 @@ function ViewRS () {
 
 }
 
-export default ViewRS;
+export default ViewAll;

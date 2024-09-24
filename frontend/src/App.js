@@ -1,8 +1,8 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.css';
 
-import { ViewRS, ViewRX, ViewLS, ViewLX, ViewRSS, AddItem, ItemPage, ImportData, ViewArchive } from './pages/Index';
+import { ViewRS, ViewRX, AddItem, ItemPage, ImportData, ViewArchive } from './pages/Index';
 import { UpdateUser, AddUser, UserPage, ViewUsers } from './pages/Index';
 import { Login, Main, Register } from './pages/Index';
 
@@ -27,9 +27,6 @@ function App() {
         {/* Radiation Data Related Pages */}
         <Route path="/ViewRX" element={<ProtectedRoute element={ViewRX} />} />
         <Route path="/ViewRS" element={<ProtectedRoute element={ViewRS} />} />
-        <Route path="/ViewRSS" element={<ProtectedRoute element={ViewRSS} />} />
-        <Route path="/ViewLS" element={<ProtectedRoute element={ViewLS} />} />
-        <Route path="/ViewLX" element={<ProtectedRoute element={ViewLX} />} />
         <Route path="/AddItem" element={<ProtectedRoute element={AddItem} />} />
         <Route path="/ItemPage" element={<ProtectedRoute element={ItemPage} />} />
         <Route path="/ImportData" element={<ProtectedRoute element={ImportData} />} />

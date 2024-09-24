@@ -1,19 +1,14 @@
 import {useNavigate} from "react-router-dom"
-import React, { useState } from "react";
-import SearchFunc from "./SearchBar";
+import React from "react";
 
-const RxTable = ({Title, Info}) =>{
+const RxTable = ({Title, Headers, Info}) =>{
 
     const nav = useNavigate();
 
     const rowClick = (rowData) =>{
-        nav('/ItemPage',{state: {
-            data: rowData,
-            type: 'RX'
-        }})
+        nav('/ItemPage',{state: {data: rowData}})
     }
 
-    const [searchTerm, setSearchTerm] = useState("");
     return(
         <div className=" w-[100vw] h-[100vh] relative">
             <div className="absolute top-0 right-0 left-0 overflow-x-auto shadow-md sm:rounded-lg max-w-max m-auto">

@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Index';
 
 export default function Register() {
-  
-  const navigate = useNavigate();  //NEW CHANGE
+  const navigate = useNavigate(); 
   const [name, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -19,12 +18,12 @@ export default function Register() {
       return;
     }
 
-    // Check if the password is > 5
+    // Check if the password is at least 5 characters long
     if (password.length < 5) {
       setError('Password must be 5 or more characters long');
       return;
     }
-    //NEW CHANGE
+
     // Check if the email is valid
     const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
     if (!isValidEmail) {
@@ -32,7 +31,6 @@ export default function Register() {
       return;
     }
     
-    //testing fields to match with database column names
     console.log('Fields being sent to register:', { name, email, password, role });
 
     try {
@@ -132,8 +130,10 @@ export default function Register() {
                     required
                   >
                     <option value="">Select Role</option>
+                    <option value="Radiation Safety Officer role">Radiation Safety Officer role</option>
                     <option value="Radiation Safety Supervisor role">Radiation Safety Supervisor role</option>
                     <option value="Licensee role ">Licensee role </option>
+                    <option value="Nobody User ">Nobody User </option>
                   </select>
                 </div>
                 <div className="flex items-center justify-between">

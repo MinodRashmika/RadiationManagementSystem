@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import '../App.css'
 import {Navbar, Footer, RxTable, TableData, TableHeader} from '../components/Index'
 
-function ViewRX () {
+const ViewAll = () => {
 
     const [RX, setRX] = useState([]);
 
@@ -33,8 +33,23 @@ function ViewRX () {
     return(
         <div>
             <Navbar/>
-            <div className='App-header m-auto overflow-x-auto'>
+            <div className='App-header'>
                 <RxTable
+                Headers={{
+                  H1: "Make",
+                  H2: "Model",
+                  H3: "Serial_No",
+                  H4: "Equipment_Use",
+                  H5: "Location",
+                  H6: "RSS",
+                  H7: "Custodian",
+                  H8: "Last Seen",
+                  H9: "Specs 1",
+                  H10: "Specs 2",
+                  H11: "Specs 3",
+                  H12: "Specs 4",
+                  H13: "Comments"
+                }}
                 Info={{
                   asset: RX
                 }}
@@ -50,4 +65,4 @@ function ViewRX () {
 
 }
 
-export default ViewRX;
+export default ViewAll;

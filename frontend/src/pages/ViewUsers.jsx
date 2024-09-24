@@ -46,7 +46,7 @@ function ViewUsers () {
               mainTitle: "Radiation Data",
               title: "Users List"
             }}
-            users={users} // Pass users
+            users={users} // Pass users as prop
           />
       </div>
       <Footer />

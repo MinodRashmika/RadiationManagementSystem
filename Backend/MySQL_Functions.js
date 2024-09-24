@@ -4,10 +4,16 @@ import bcrypt from 'bcrypt';
 
 //Wrapper function for MySQL.query(sql,function(err,result,fields){})
 function MySQL_query(MySQL,sql,callback){
+    
     MySQL.query(sql, function (err, result, fields) {
-        if (err) {
-            callback({"status":"404",err}); // Pass error to the callback
-        } else {
+        if (err) {          //error checking
+            console.log("ERROR: ",err)
+            callback({
+                status: '404',               // Attaches a "not found" status for error checking
+                message: err
+                }) 
+
+        }else{
             callback(result);  // Attaches a "success" status for error checking
         }
     })
@@ -32,22 +38,6 @@ function querySequence(MySQL,sql,seperator,callback)            // If there are 
     }
 }
 
-async function getColumns(MySQL,TableName)
-{
-    var SQLcolumns = "DESCRIBE "+ TableName;
-    const TableColumnNames = await new Promise((resolve, reject) => {
-        MySQL_query(MySQL, SQLcolumns, function (result) {
-            var columnLength = result.length
-            const names = [];
-            for (var h = 0; h < columnLength; h++) {
-                var sqlcols = "`"+result[h]["Field"]+"`"
-                names.push(sqlcols)
-            }
-            resolve(names)
-        })
-    })
-    return TableColumnNames
-}
 //=================Sets up database========================
 function DatabaseSetup(MySQL,databaseName,callback){
 
@@ -98,40 +88,7 @@ function DatabaseSetup(MySQL,databaseName,callback){
 //=======================Loads CSV files=====================
 async function loadCSV(MySQL,CSVPath,TableName,callback){
     var path = CSVPath.replace("C:", '').replace(/["']/g, ''); // Removes "C:" and double quotation marks
-    var pathList,fileName,fileFormat,outputFile
-    //Convert to csv code
-    if (path.indexOf('\\') > -1)
-        {
-          console.log("Backslash\n\n")
-          pathList = path.split("\\")
-          fileName = pathList[pathList.length-1]
-          
-        }
-    else if (path.indexOf('/') > -1)
-        {
-          console.log("forward slash\n\n")
-          pathList = path.split("/")
-          fileName = pathList[pathList.length-1]
-        }
-    else
-    {
-        return 1
-    }
-
-    fileName = fileName.split(".")
-    fileFormat = fileName[1]
-    if (fileFormat == "xlsx")
-        {
-            outputFile = pathList.slice(1,pathList.length-1)
-            outputFile = "/" + outputFile.join("/") + "/" + fileName[0] + ".csv"
-
-            const workBook = XLSX.readFile(path);                       //https://stackoverflow.com/questions/34342425/convert-xls-to-csv-on-the-server-in-node
-            XLSX.writeFile(workBook, outputFile, { bookType: "csv" });
-            path = outputFile
-        }
-
-
-    // End of Convert to csv code
+    
     try
     {
         var fileCSV = fs.readFileSync(path, 'utf8');
@@ -155,37 +112,25 @@ async function loadCSV(MySQL,CSVPath,TableName,callback){
             })
             sql = sql +TableColumnNames.toString() +")"+" VALUES (\""
             var values = fileCSV[i].split(/,(?=(?:[^"]|"[^"]*")*$)/)                // Reference for splitting by comma but not splitting commas inside double quotation marks https://stackoverflow.com/questions/11456850/split-a-string-by-commas-but-ignore-commas-within-double-quotes-using-javascript
-            
-            if (fileCSV[i] == ",".repeat(fileCSV[i].length))                        // This if statement will skip over empty rows in the table by checking if theres a constant number of commas like ",,,,," without anything in between like e.g Name,,phone,,,
-                {
-                    continue
-                }
-            for(var j= 0; j< TableColumnNames.length-1;j++)             // Uses tablecolumnnames.length instead of values.length to restrict the number of columns (e.g when tables have empty columns)
+
+            for(var j= 0; j< values.length-1;j++)
             {   
                 //console.log(values[j])
                 sql = sql+ values[j].replace(/"/g,"") + "\",\""
             }
             
-            var lastkey = TableColumnNames.length-1
+            var lastkey = values.length-1
             sql = sql + values[lastkey].replace("\r",'').replace(/"/g,"") + "\");"
             console.log(sql)
             MySQL_query(MySQL,sql,callback)
         }
-        if (fileFormat == "xlsx")
-            {
-                fs.unlink(outputFile, (err) => {
-                    if (err) {
-                        console.error('Error deleting file:', err);
-                        return;
-                    }
-                    console.log('File deleted successfully');
-                });
-            }
     } catch{
         console.log("ERROR Opening file")
     }
 
 }
+
+
 //=================================================== READ FUNCTIONS (Display Table contents, sorted table, search function (To be added))=================================================
 
 
@@ -225,16 +170,22 @@ function SortBy(MySQL,TableName,ColumnName,callback){
   
 }
 
-async function searchTable(MySQL,TableName,Data,callback) // Creates an SQL "SELECT * FROM WHERE ColumnName = Data" statement 
+function searchTable(MySQL,TableName,Data,callback) // Creates an SQL "SELECT * FROM WHERE ColumnName = Data" statement 
 {
-    try{
-        var sql = "SELECT * FROM "+TableName+" WHERE ";
+    var sql = "SELECT * FROM "+TableName+" WHERE ";
 
-        var TableColumnNames = await getColumns(MySQL,TableName)
-        console.log(TableColumnNames)
-        var columnLength = TableColumnNames.length
+    var SQLcolumns = "DESCRIBE "+ TableName;
+    MySQL_query(MySQL,SQLcolumns,function(result){ // Gets column names of tables
+
+        var columnLength = result.length
+        const TableColumnNames = []
+        for(var i = 0 ; i < columnLength ; i++) 
+        {
+            TableColumnNames.push(result[i]["Field"])
+        }
+        
         var SearchFieldcount = 0  // Keeps track of Number of search fields 
-        for(var i = 0 ; i < Data.length ; i++)  
+        for(i = 0 ; i < Data.length ; i++)  
         {
             if (Data[i] != "")
             {
@@ -242,18 +193,19 @@ async function searchTable(MySQL,TableName,Data,callback) // Creates an SQL "SEL
                 {
                     sql = sql + " AND "
                 }
-                sql = sql + TableColumnNames[i] + " = " + "'"+Data[i] + "'"
+
+                sql = sql + "`" + TableColumnNames[i]+ "`" + " = " + "'"+Data[i] + "'"
+
                 SearchFieldcount++;
-            }     
+            }
+
+            
         }
+
         sql = sql + ";"
-        console.log(sql)
         MySQL_query(MySQL,sql,callback)
 
-    }catch (error){
-        callback(null, error);
-
-    }
+    })
 
 
 }
@@ -303,6 +255,7 @@ function editRowTable(MySQL,TableName,ID,NewData,callback)
 {
     TableName = TableName.toUpperCase()
     var sql = "CALL Edit"+TableName+"Entry("+ID
+    console.log(NewData)
     for (var i=0 ; i < NewData.length; i++)
     {
         

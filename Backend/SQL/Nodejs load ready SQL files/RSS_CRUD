@@ -10,7 +10,7 @@ CREATE PROCEDURE AddRSSEntry (
 BEGIN
     INSERT INTO `rss` (`Name`, `Email`, `Phone`, `Location`, `School`, `Head of School`, `Purposes`)
     VALUES (name_param, email_param, phone_param, location_param, school_param, head_of_school_param, purposes_param);
-END
+ END
 
 
 
@@ -19,7 +19,7 @@ BEGIN
     SELECT *
     FROM `RSS`
     ORDER BY `Name`;
-END
+ END
 
 
 CREATE PROCEDURE SortByEmail_RSS()
@@ -27,7 +27,7 @@ BEGIN
     SELECT *
     FROM `RSS`
     ORDER BY `Email`;
-END
+ END
 
 
 CREATE PROCEDURE SortByPhone_RSS()
@@ -35,14 +35,15 @@ BEGIN
     SELECT *
     FROM `RSS`
     ORDER BY `Phone`;
-END
+ END
+
 
 CREATE PROCEDURE SortByLocation_RSS()
 BEGIN
     SELECT *
     FROM `RSS`
     ORDER BY `Location`;
-END
+ END
 
 
 CREATE PROCEDURE SortBySchool_RSS()
@@ -50,7 +51,7 @@ BEGIN
     SELECT *
     FROM `RSS`
     ORDER BY `School`;
-END
+ END
 
 
 CREATE PROCEDURE SortByHeadOfSchool_RSS()
@@ -58,7 +59,7 @@ BEGIN
     SELECT *
     FROM `RSS`
     ORDER BY `Head of School`;
-END
+ END
 
 
 CREATE PROCEDURE SortByPurposes_RSS()
@@ -66,16 +67,17 @@ BEGIN
     SELECT *
     FROM `RSS`
     ORDER BY `Purposes`;
-END
+ END
 
 
+ 
 CREATE PROCEDURE UpdateRSSName(
     IN id_param INT,
     IN name_param VARCHAR(255)
 )
 BEGIN
     UPDATE `rss` SET `Name` = name_param WHERE `id` = id_param;
-END
+ END
 
 
 CREATE PROCEDURE UpdateRSSEmail(
@@ -84,7 +86,7 @@ CREATE PROCEDURE UpdateRSSEmail(
 )
 BEGIN
     UPDATE `rss` SET `Email` = email_param WHERE `id` = id_param;
-END
+ END
 
 
 CREATE PROCEDURE UpdateRSSPhone(
@@ -93,7 +95,7 @@ CREATE PROCEDURE UpdateRSSPhone(
 )
 BEGIN
     UPDATE `rss` SET `Phone` = phone_param WHERE `id` = id_param;
-END
+ END
 
 
 CREATE PROCEDURE UpdateRSSLocation(
@@ -102,7 +104,7 @@ CREATE PROCEDURE UpdateRSSLocation(
 )
 BEGIN
     UPDATE `rss` SET `Location` = location_param WHERE `id` = id_param;
-END
+ END
 
 
 CREATE PROCEDURE UpdateRSSSchool(
@@ -111,7 +113,7 @@ CREATE PROCEDURE UpdateRSSSchool(
 )
 BEGIN
     UPDATE `rss` SET `School` = school_param WHERE `id` = id_param;
-END
+ END
 
 
 CREATE PROCEDURE UpdateRSSHeadOfSchool(
@@ -120,7 +122,7 @@ CREATE PROCEDURE UpdateRSSHeadOfSchool(
 )
 BEGIN
     UPDATE `rss` SET `Head of School` = head_of_school_param WHERE `id` = id_param;
-END
+ END
 
 
 CREATE PROCEDURE UpdateRSSPurposes(
@@ -129,7 +131,7 @@ CREATE PROCEDURE UpdateRSSPurposes(
 )
 BEGIN
     UPDATE `rss` SET `Purposes` = purposes_param WHERE `id` = id_param;
-END
+ END
 
 
 
@@ -155,7 +157,7 @@ BEGIN
         `Head of School` = head_of_school_param,
         `Purposes` = purposes_param
     WHERE `id` = id_param;
-END
+ END
 
 
 CREATE PROCEDURE MoveToRSSArchive(
@@ -184,18 +186,18 @@ BEGIN
 
     DELETE FROM `rss`
     WHERE `id` = id_param;
-END
+ END
 
 
 
 
 
 
-CREATE PROCEDURE MoveFromRSSArchive(
+CREATE PROCEDURE `MoveFromRSSArchive`(
     IN id_param INT
 )
 BEGIN
- 
+
     DECLARE new_id INT;
 
 
@@ -222,4 +224,6 @@ BEGIN
 
     SET @counter := 0;
     UPDATE `rss` SET `id` = @counter := @counter + 1 WHERE `id` > 0;
-END
+ END
+
+ 

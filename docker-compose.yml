@@ -13,7 +13,7 @@ services:
     ports:
       - "8070:8070"
     environment:
-      - DB_HOST=db
+      - DB_HOST=localhost
       - DB_PORT=3306
       - DB_USER=root
       - DB_PASSWORD=student123
@@ -21,14 +21,13 @@ services:
       - app-network
 
   db:
-    build: .
+    image: mysql
     restart: always
-    command: ["mysqld", "--mysql-native-password=ON"]
     environment:
       MYSQL_ROOT_PASSWORD: student123
+      MYSQL_DATABASE: your_database_name
     volumes:
       - data_db:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - app-network
 

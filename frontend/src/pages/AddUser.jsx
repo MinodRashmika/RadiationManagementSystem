@@ -17,10 +17,9 @@ function AddUser() {
   const [passwordError, setPasswordError] = useState('');
   const [roleError, setRoleError] = useState('');
 
-
   const handleInputChange = (inputName, value) => {
     if (inputName === 'email') {
-      const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);// cited chatgpt on regex
+      const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
       setEmailError(isValidEmail ? '' : 'Invalid email');
     } else if (inputName === 'password') {
       setPasswordError(value.length >= 5 ? '' : 'Password must be at least 5 characters long');

@@ -196,7 +196,6 @@ END
 
 
 
-
 CREATE DEFINER=`root`@`localhost` PROCEDURE `EditRSSEntry`(
     IN entry_id INT,
     IN new_name VARCHAR(255),

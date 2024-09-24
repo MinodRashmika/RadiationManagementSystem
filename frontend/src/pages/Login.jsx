@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState } from 'react'; // Removed useEffect import
+import { useNavigate } from 'react-router-dom';
 import { Navbar, Footer } from '../components/Index';
 
 export default function Login() {
@@ -8,8 +8,6 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [otp, setOtp] = useState('');
   const [error, setError] = useState('');
-  const [showOTP, setShowOTP] = useState(false); // State variable to track visibility of OTP input field
-  const [token, setToken] = useState('');
 
   const handleLogin = async () => {
     try {
@@ -24,18 +22,15 @@ export default function Login() {
       console.log('Login response data:', data); // Log the response data to check if token is received
       if (response.ok) {
         setShowOTP(true); // show otp after confirmed login details
-        setToken(data.token); // Store token in state
-        sessionStorage.setItem('token', data.token); // Store token in session storage
+        const token = data.token; // Storing the token in a variable
+        localStorage.setItem('token', token);
 
-        console.log('Token received:', token); //testing 
+        console.log('Token received:', token);
         setError('');
-        return token; 
+        return token; // Return the token from the function
       } else {
         setError(data.error || 'Login failed');
       }
-      //cite chatgpt for syntax on console print
-      console.log('Request:', JSON.stringify({ email, password })); // Log the request data to the console
-      console.log('Response:', data); // Log the response data to the console
     } catch (error) {
       console.error('Error occurred during login:', error);
       setError('Login failed');
@@ -45,31 +40,29 @@ export default function Login() {
   
 
   const handleVerifyOTP = async () => {
+    console.log('Verifying OTP...');
+    console.log('OTP value:', otp); // Log the OTP value
     try {
       const token = sessionStorage.getItem('token');
       const response = await fetch('http://localhost:8070/verify-otp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-
         },
-        body: JSON.stringify({ email, otp }),
+        body: JSON.stringify({ otp }), // Pass only the OTP value
       });
       const data = await response.json();
       if (response.ok) {
         // OTP verified successfully, save token
-        localStorage.setItem('token', token);
-
+ 
         navigate('/');
       } else {
-        setError(data.error || 'OTP verification failed');
+        console.error('Error:', data.error || 'OTP verification failed');
+        // Handle the error condition, such as displaying an error message to the user
       }
-      console.log('Request:', JSON.stringify({ email, otp })); // Log the request data to the console
-      console.log('Response:', data); // Log the response data to the console
     } catch (error) {
       console.error('Error occurred during OTP verification:', error);
-      setError('OTP verification failed');
+      // Handle network errors or other exceptions
     }
   };
   
@@ -120,31 +113,13 @@ export default function Login() {
                   onChange={(e) => setPassword(e.target.value)}
                 />
               </div>
-              {showOTP && (
-                <div className="mb-6">
-                  <label className="block text-black text-sm font-bold mb-2" htmlFor="otp">
-                    OTP
-                  </label>
-                  <input
-                    className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                    id="otp"
-                    type="text"
-                    placeholder="OTP"
-                    value={otp}
-                    onChange={(e) => setOtp(e.target.value)}
-                  />
-                </div>
-              )}
               <div className="flex items-center justify-between">
-                <Link to="/register" className="text-blue-500 hover:text-blue-700 text-bold">
-                  Register
-                </Link>
                 <button
-                  className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+                  className="bg-gray-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                   type="button"
-                  onClick={showOTP ? handleVerifyOTP : handleLogin} // If showOTP is true, call handleVerifyOTP, else call handleLogin
+                  onClick={handleLogin}
                 >
-                  {showOTP ? 'Verify OTP' : 'Login'} {/* Button text changes based on showOTP state */}
+                  Login
                 </button>
               </div>
             </div>

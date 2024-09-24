@@ -8,7 +8,7 @@ var rxPath = "C:/Users/Hiffy/Desktop/UNI/Y3 S2/Capstone Computing 2/Code Environ
 var rsPath = "C:/Users/Hiffy/Desktop/UNI/Y3 S2/Capstone Computing 2/Code Environments/240306 RS examples.csv"
 var lsPath = "C:/Users/Hiffy/Desktop/UNI/Y3 S2/Capstone Computing 2/Code Environments/240306 LS examples.csv"
 var lxPath = "C:/Users/Hiffy/Desktop/UNI/Y3 S2/Capstone Computing 2/Code Environments/240306 LS examples.csv"
-var rssPath = "C:/Users/Hiffy/Desktop/UNI/Y3 S2/Capstone Computing 2/XLSX TEST LS .xlsx"
+var rssPath = "C:/Users/Hiffy/Desktop/UNI/Y3 S2/Capstone Computing 2/Code Environments/240306 RSS examples.csv"
 
 var ImportYesOrNo = "Y"
 
@@ -138,7 +138,7 @@ const AddTestList = [
 },
 {
   TableName: "rss",
-  Data:["Down","Robb","123123123@student.curtin.edu.au","","","","","6/08/2024","","",""]
+  Data:["New RSS", "NEWRSS@email.com", "", "4927393837", "", "", "NewRSSPurpose"]
 }]
 describe('POST add results', () => {
   for(var i = 0; i < AddTestList.length; i++){
@@ -184,8 +184,8 @@ const EditTestList = [
 },
 {
   TableName: "rss",
-  Data:"15",
-  NewData:["", "EDITED ls", "", "EDITED ls", "", "", "", "", "", "", ""]
+  Data:"10",
+  NewData:["", "EDITED", "", "New Location", "", "", ""]
 }
 ]
 

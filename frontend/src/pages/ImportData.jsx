@@ -24,9 +24,9 @@ const ImportData = () => {
     const showCsvPathDiv = useDelayUnmount(isCsvPathMounted, 250)
     const showTableNameDiv = useDelayUnmount(isTableNameMounted, 250)
 
-    const [fileInput, setFineInput] = useState(null) 
+    const [PathName, setPathName] = useState('') 
     const [TableName, setTableName] = useState('')
-
+    const [YesOrNo, SetYesOrNo] = useState(null)
 
     //Function to handle submitting user entries choices and data on importing data from CSV files
     const HandleSubmit = async (e) => {
@@ -36,21 +36,17 @@ const ImportData = () => {
             alert("Please Enter a Table Name!");
             return;
         }
-
-        if (!fileInput) {
-            alert("Please select a file to upload!");
-            return;
+        
+        const data = {
+            PathName,
+            TableName,
+            YesOrNo
         }
-
-
-        let formData = new FormData();
-        formData.append('file', fileInput);
-        formData.append('tablename', TableName);
 
         try{
             const token = localStorage.getItem('token'); // Retrieve token from localStorage
 
-            const res = await axios.post("http://localhost:8070/upload", formData,{
+            const res = await axios.post("http://localhost:8070/3000sql", data,{
                 headers: {
                     Authorization: `Bearer ${token}`, // Include token in the Authorization header
                   },
@@ -78,9 +74,6 @@ const ImportData = () => {
         }
     }
 
-    const handleFileInput = (e) => {
-        setFineInput(e.target.files[0]);
-    }
     
     return (
     <div>
@@ -93,9 +86,7 @@ const ImportData = () => {
                     <div>
                         {isStartBtnVisible && (<button type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
                             onClick={() => {
-
                                 setIsSetupMounted(true);
-                                setIsCsvPathMounted(true);
                                 setIsStartBtnVisibile(false);
                                 setIsCancelBtnVisibile(true);
                             }}
@@ -110,6 +101,31 @@ const ImportData = () => {
                     </div>
                 </div>
 
+                {showSetupDiv && (
+                <div 
+                className= "animatedDiv"
+                style={isSetupMounted ? mountedAnimation : unmountedAnimation}
+                > 
+                    <h1 className='text-3xl font-bold mt-5'>Would you like to setup new database?</h1>
+                    <p>THIS WILL ERASE/REPLACE YOUR CURRENT DATABASE</p>
+                    <div className='flex gap-10 my-10 justify-center'>
+                        <button type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+                            onClick={() => {
+                                setIsCsvPathMounted(true);
+                                setIsSetupMounted(false);
+                                SetYesOrNo(true);
+                            }}
+                        >YES</button>
+                        <button type="button" class="text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+                            onClick={() => {
+                                setIsCsvPathMounted(true);
+                                setIsSetupMounted(false);
+                                SetYesOrNo(false);
+                            }}
+                        >NO</button>
+                    </div>
+                </div>)}
+
                 {/* If yes or no is clicked, it will ask to enter path to csv, only difference is if it will delete existing databases */}
 
                 {showCsvPathDiv && 
@@ -117,30 +133,51 @@ const ImportData = () => {
                 className='animatedDiv'
                 style={isCsvPathMounted ? mountedAnimation : unmountedAnimation}
                 >
-                    <h1 className='text-3xl font-bold mt-5'>Open Your CSV File</h1>
+                    <h1 className='text-3xl font-bold mt-5'>Enter the path to your CSV File</h1>
                     <div>
-                    <form id="uploadForm" enctype="multipart/form-data" className='py-5'
-                    onSubmit={HandleSubmit}>
-                            <input class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" 
-                                id="file_input" 
-                                type="file"
-                                onChange={handleFileInput}/>
-                            <p class="mt-2 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">XLSX, XSL, or CSV (Max 10MB)</p>
-                            <input type="input" id="tablename" className=" placeholder:text-center bg-gray-50 mt-5 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-                            placeholder="RX / RS / LS / LX / RSS" 
-                            onChange={(e) => {
-                                setTableName(e.target.value)
+                        <label for="pathname" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Path to CSV</label>
+                        <input type="input" id="PathName" class="my-10 bg-gray-50 mt-5 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
+                        placeholder="C:/Desktop" 
+                        onChange={(e) => {
+                            setPathName(e.target.value)
+                        }}
+                        required 
+                        />
+
+                        <button type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+                            onClick={() => {
+                                if (!PathName.trim()){
+                                    alert("Please Enter a File Path to CSV File!");
+                                    return;
+                                }
+                                setIsTableNameMounted(true);
+                                setIsCsvPathMounted(false);
+                                //create a function to send the filepath to backend
                             }}
-                            required 
-                            />
-                            <p class="mt-1 mb-10 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">Enter Table Name</p>
-
-
-                            <button type="submit" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
-                            > Confirm </button>
-                    </form>
+                        > Confirm </button>
                     </div>
                 </div>)}
+
+                {showTableNameDiv && 
+                (<div
+                className='animatedDiv'
+                style={isTableNameMounted ? mountedAnimation : unmountedAnimation}
+                >
+                    <h1 className='text-3xl font-bold mt-5'>Enter the Name of New Table</h1>
+                    <div>
+                        <input type="text" id="TableName" class="my-10 bg-gray-50 mt-5 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Table Name"
+                        onChange={(e) => {
+                            setTableName(e.target.value)
+                        }}
+                        required />
+
+                        <button type="button" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800"
+                            onClick={HandleSubmit}
+                        > Submit </button>
+                    </div>
+                </div>)}
+
+                {/* write something to display a modal with success message */}
             </div>
         </div>
         <Footer/>
